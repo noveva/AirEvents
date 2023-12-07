@@ -3,10 +3,9 @@ import {
   SafeAreaView,
   ScrollView,
   StatusBar,
-  Text,
   useColorScheme,
-  View,
 } from 'react-native';
+import Events from './events/Events';
 
 function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
@@ -25,9 +24,7 @@ function App(): JSX.Element {
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
-        <View>
-          <Text>Hello World</Text>
-        </View>
+        <Events />
       </ScrollView>
     </SafeAreaView>
   );
