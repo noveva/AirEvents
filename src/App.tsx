@@ -3,6 +3,7 @@ import {
   SafeAreaView,
   ScrollView,
   StatusBar,
+  StyleSheet,
   useColorScheme,
 } from 'react-native';
 import Events from './events/Events';
@@ -10,24 +11,26 @@ import Events from './events/Events';
 function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
 
-  const backgroundStyle = {
-    // backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-    backgroundColor: '#fff',
-  };
-
   return (
-    <SafeAreaView style={backgroundStyle}>
+    <SafeAreaView style={containerStyles.main}>
       <StatusBar
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
+        backgroundColor={containerStyles.main.backgroundColor}
       />
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
+        contentContainerStyle={containerStyles.main}>
         <Events />
       </ScrollView>
     </SafeAreaView>
   );
 }
+
+const containerStyles = StyleSheet.create({
+  main: {
+    flex: 1,
+    backgroundColor: '#d7f9ff',
+  },
+});
 
 export default App;

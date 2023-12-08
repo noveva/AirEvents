@@ -1,5 +1,5 @@
 import React from 'react';
-import {View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import ButtonIcon from './components/ButtonIcon';
 
 function Events(): JSX.Element {
@@ -8,10 +8,16 @@ function Events(): JSX.Element {
   }
 
   return (
-    <View>
+    <View style={containerStyles.main}>
       <ButtonIcon onPress={handlePress} />
     </View>
   );
 }
+
+const containerStyles = StyleSheet.create({
+  main: {
+    flex: 1,
+  },
+});
 
 export default Events;
