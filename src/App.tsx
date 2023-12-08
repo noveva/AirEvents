@@ -7,6 +7,7 @@ import {
   useColorScheme,
 } from 'react-native';
 import Events from './events/Events';
+import {palette} from './common/styles/colors';
 
 function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
@@ -29,7 +30,7 @@ function App(): JSX.Element {
 const containerStyles = StyleSheet.create({
   main: {
     flex: 1,
-    backgroundColor: '#d7f9ff',
+    backgroundColor: palette.lightBlue,
   },
 });
 

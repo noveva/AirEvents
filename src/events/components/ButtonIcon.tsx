@@ -1,5 +1,6 @@
 import React from 'react';
 import {GestureResponderEvent, StyleSheet, Text, Pressable} from 'react-native';
+import {palette} from '../../common/styles/colors';
 
 const buttonSize = 60;
 
@@ -44,10 +45,10 @@ const buttonIconStyles = StyleSheet.create({
     fontSize: buttonSize - 12,
   },
   textDefault: {
-    color: 'rgba(255,255,255, 1)',
+    color: palette.white,
   },
   textPressed: {
-    color: 'rgba(255,255,255, 0.5)',
+    color: palette.opaqueWhite,
   },
 });
 
