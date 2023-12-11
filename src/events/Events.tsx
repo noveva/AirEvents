@@ -13,7 +13,7 @@ const listItems = [
   {title: 'A sdflk ja'},
 ];
 
-function Events(): JSX.Element {
+function Events(): React.JSX.Element {
   const [isModalVisible, setModalVisible] = useState(false);
 
   function toggleModal() {

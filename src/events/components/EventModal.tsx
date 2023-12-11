@@ -8,7 +8,7 @@ import ButtonIcon from '../../common/components/ButtonIcon';
 
 type Props = {isVisible: boolean; onClose: () => void};
 
-function EventModal({isVisible, onClose}: Props) {
+function EventModal({isVisible, onClose}: Props): React.JSX.Element {
   return (
     <Modal
       style={styles.modal}
