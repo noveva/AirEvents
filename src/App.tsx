@@ -6,8 +6,8 @@ import {
   StyleSheet,
   useColorScheme,
 } from 'react-native';
-import Events from './events/Events';
 import containerUtils from './common/styles/containers';
+import Events from './events/Events';
 
 function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';

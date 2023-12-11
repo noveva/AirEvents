@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import ButtonIcon from './components/ButtonIcon';
-import EventModal from './components/EventModal';
 import {palette} from '../common/styles/colors';
 import textVariants from '../common/styles/text';
+import ButtonIcon from '../common/components/ButtonIcon';
+import EventModal from './components/EventModal';
 
 const listItems = [
   {title: 'Asdflkja'},
@@ -37,7 +37,12 @@ function Events(): JSX.Element {
         </View>
       ))}
       <EventModal isVisible={isModalVisible} onClose={toggleModal} />
-      <ButtonIcon onPress={toggleModal} />
+      <ButtonIcon
+        icon="add"
+        size={40}
+        style={eventStyles.addButton}
+        onPress={toggleModal}
+      />
     </View>
   );
 }
@@ -45,6 +50,17 @@ function Events(): JSX.Element {
 const eventStyles = StyleSheet.create({
   main: {
     flex: 1,
+  },
+  addButton: {
+    height: 60,
+    width: 60,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 30,
+    backgroundColor: '#f6553e',
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
   },
 });
 
