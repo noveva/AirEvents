@@ -21,19 +21,17 @@ function Events(): JSX.Element {
   }
 
   return (
-    <View style={containerStyles.main}>
+    <View style={eventStyles.main}>
       {listItems.map(item => (
         <View
           style={[
             {
               backgroundColor: palette.opaqueBlue,
               marginTop: 10,
-              marginLeft: 20,
-              marginRight: 20,
               padding: 10,
               borderRadius: 20,
             },
-            containerStyles.main,
+            eventStyles.main,
           ]}>
           <Text style={textVariants.body}>{item.title}</Text>
         </View>
@@ -44,7 +42,7 @@ function Events(): JSX.Element {
   );
 }
 
-const containerStyles = StyleSheet.create({
+const eventStyles = StyleSheet.create({
   main: {
     flex: 1,
   },
