@@ -19,17 +19,19 @@ function EventModal({isVisible, onClose}: Props) {
       animationInTiming={800}
       animationOutTiming={800}
       hasBackdrop={false}>
-      <SafeAreaView style={styles.wrapper}>
-        <View>
-          <Icon
-            name="arrow-back"
-            size={20}
-            color={palette.white}
-            allowFontScaling={false}
-          />
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.wrapper}>
+          <View>
+            <Icon
+              name="arrow-back"
+              size={20}
+              color={palette.white}
+              allowFontScaling={false}
+            />
+          </View>
+          <Text style={textVariants.body}>I am the modal content!</Text>
+          <Button title="Close" onPress={onClose} />
         </View>
-        <Text style={textVariants.body}>I am the modal content!</Text>
-        <Button title="Close" onPress={onClose} />
       </SafeAreaView>
     </Modal>
   );
@@ -41,9 +43,12 @@ const styles = StyleSheet.create({
   modal: {
     ...containerUtils.main,
     ...spacingUtils.margin0,
-    ...containerUtils.withPadding,
+  },
+  safeArea: {
+    flex: 1,
   },
   wrapper: {
     flex: 1,
+    ...containerUtils.withPadding,
   },
 });
