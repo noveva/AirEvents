@@ -3,11 +3,10 @@ import {
   SafeAreaView,
   ScrollView,
   StatusBar,
-  StyleSheet,
   useColorScheme,
 } from 'react-native';
 import Events from './events/Events';
-import {palette} from './common/styles/colors';
+import containerStyles from './common/styles/containers';
 
 function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
@@ -26,12 +25,5 @@ function App(): JSX.Element {
     </SafeAreaView>
   );
 }
-
-const containerStyles = StyleSheet.create({
-  main: {
-    flex: 1,
-    backgroundColor: palette.lightBlue,
-  },
-});
 
 export default App;
