@@ -3,16 +3,17 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
+    "android": "react-native run-android --port=8088",
+    "ios": "react-native run-ios --port=8088",
     "lint": "eslint .",
-    "start": "react-native start",
+    "start": "react-native start --port=8088",
     "test": "jest"
   },
   "dependencies": {
     "react": "18.2.0",
     "react-native": "0.72.7",
-    "react-native-modal": "^13.0.1"
+    "react-native-modal": "^13.0.1",
+    "react-native-vector-icons": "^10.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
@@ -22,6 +23,7 @@
     "@react-native/metro-config": "^0.72.11",
     "@tsconfig/react-native": "^3.0.0",
     "@types/react": "^18.0.24",
+    "@types/react-native-vector-icons": "^6.4.18",
     "@types/react-test-renderer": "^18.0.0",
     "babel-jest": "^29.2.1",
     "eslint": "^8.19.0",
