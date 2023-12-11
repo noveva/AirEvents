@@ -1,5 +1,6 @@
 import React from 'react';
-import {GestureResponderEvent, StyleSheet, Text, Pressable} from 'react-native';
+import {GestureResponderEvent, StyleSheet, Pressable} from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 import {palette} from '../../common/styles/colors';
 
 const buttonSize = 60;
@@ -13,15 +14,16 @@ function ButtonIcon({onPress}: Props): React.JSX.Element {
     <Pressable onPress={onPress} style={buttonIconStyles.container}>
       {({pressed}) => {
         return (
-          <Text
-            style={[
+          <Icon
+            name="add"
+            size={buttonIconStyles.text.fontSize}
+            color={
               pressed
-                ? buttonIconStyles.textPressed
-                : buttonIconStyles.textDefault,
-              buttonIconStyles.text,
-            ]}>
-            {'\u002B'}
-          </Text>
+                ? buttonIconStyles.textPressed.color
+                : buttonIconStyles.textDefault.color
+            }
+            allowFontScaling={false}
+          />
         );
       }}
     </Pressable>
@@ -41,8 +43,7 @@ const buttonIconStyles = StyleSheet.create({
     right: buttonSize / 2,
   },
   text: {
-    lineHeight: buttonSize,
-    fontSize: buttonSize - 12,
+    fontSize: buttonSize / 1.4,
   },
   textDefault: {
     color: palette.white,
