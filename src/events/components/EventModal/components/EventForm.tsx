@@ -3,21 +3,23 @@ import {StyleSheet, View} from 'react-native';
 import EventFormGroup from './FormGroup';
 import spacingUtils from '../../../../common/styles/spacing';
 import Button from '../../../../common/components/Button';
-
-interface Event {
-  locationId: EventLocation;
-  eventType: EventType;
-  startTimestamp: number; //unix epoch time
-  endTimestamp: number; //unix epoch time
-}
+import {getUnixEpoch} from '../../../../api/Utils';
+import {
+  EVENTS,
+  Event,
+  EventLocation,
+  EventType,
+  LOCATIONS,
+} from '../../../EventsTypes';
+import usePost from '../../../../api/PostRequest';
+import {RequestStatus} from '../../../../api/RequestTypes';
+import {EVENTS_API} from '../../../../api/Endpoints';
 
 type TimeStamp = {
   label: string;
   value: number;
 };
 
-const EVENTS = ['boil', 'fry', 'oven', 'window', 'laundry'] as const;
-const LOCATIONS = ['livingroom', 'bedroom'] as const;
 const TIMESTAMPS: TimeStamp[] = [
   {label: 'now', value: 0},
   {label: '5m ago', value: 5 * 60},
@@ -28,8 +30,6 @@ const TIMESTAMPS: TimeStamp[] = [
   {label: '50m ago', value: 50 * 60},
   {label: '1h ago', value: 60 * 60},
 ];
-type EventType = (typeof EVENTS)[number];
-type EventLocation = (typeof LOCATIONS)[number];
 
 function EventForm(): React.JSX.Element {
   const [event, setEvent] = useState<EventType>();
@@ -37,19 +37,23 @@ function EventForm(): React.JSX.Element {
   const [startTimestamp, setStartTimestamp] = useState<string>(
     TIMESTAMPS[0].label,
   );
+  const {status, error, post} = usePost(EVENTS_API.add);
   const timestampOptions = TIMESTAMPS.map(stamp => stamp.label);
+  const isValidEvent: boolean = !!event && !!location && !!startTimestamp;
 
-  // number of seconds since epoch
-  // function getUnixEpoch(secondsAgo: number): number {
-  //   return Math.floor(Date.now() / 1000) - secondsAgo;
-  // }
+  function getTimeStamp(selectedLabel: string): number {
+    const stamp = TIMESTAMPS.find(({label}) => label === selectedLabel);
+    return stamp ? getUnixEpoch(stamp.value) : 0;
+  }
 
-  //   function getTimeStamp(selectedLabel: string) {
-  //     const stamp = TIMESTAMPS.find(({label}) => label === selectedLabel);
-  //     if (stamp) {
-  //       setStartTimestamp(getUnixEpoch(stamp.value));
-  //     }
-  //   }
+  async function submit() {
+    const data: Event = {
+      startTimestamp: getTimeStamp(startTimestamp),
+      eventType: event as EventType,
+      locationId: location,
+    };
+    await post(data);
+  }
 
   return (
     <View style={styles.container}>
@@ -77,9 +81,9 @@ function EventForm(): React.JSX.Element {
       <View style={styles.buttonRow}>
         <Button
           label="Submit"
-          onPress={() => {
-            console.log('clicked');
-          }}
+          disabled={!isValidEvent}
+          waiting={status === RequestStatus.fetching}
+          onPress={submit}
         />
       </View>
     </View>
