@@ -29,9 +29,15 @@ function Chips({
             event.preventDefault();
             onPress(value);
           }}>
-          <Text role="radio" style={[textVariants.body]}>
-            {value}
-          </Text>
+          {({pressed}) => {
+            return (
+              <Text
+                role="radio"
+                style={[textVariants.body, pressed && styles.textPressed]}>
+                {value}
+              </Text>
+            );
+          }}
         </Pressable>
       ))}
     </View>
@@ -53,5 +59,8 @@ const styles = StyleSheet.create({
   },
   selected: {
     backgroundColor: palette.blue63,
+  },
+  textPressed: {
+    color: palette.grey,
   },
 });
