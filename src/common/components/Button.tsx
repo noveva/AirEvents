@@ -1,5 +1,5 @@
 import React from 'react';
-import {Pressable, StyleSheet, Text} from 'react-native';
+import {ActivityIndicator, Pressable, StyleSheet, Text} from 'react-native';
 import {GestureResponderEvent} from 'react-native-modal';
 import spacingUtils from '../styles/spacing';
 import {palette} from '../styles/colors';
@@ -7,14 +7,26 @@ import textVariants from '../styles/text';
 
 type Props = {
   label: string;
+  disabled?: boolean;
+  waiting?: boolean;
   onPress: (event: GestureResponderEvent) => void;
 };
 
-function Button({label, onPress}: Props): React.JSX.Element {
+function Button({
+  label,
+  disabled = false,
+  waiting = false,
+  onPress,
+}: Props): React.JSX.Element {
   return (
-    <Pressable onPress={onPress} style={styles.button}>
+    <Pressable
+      disabled={disabled}
+      onPress={onPress}
+      style={[styles.button, disabled && styles.buttonDisabled]}>
       {({pressed}) => {
-        return (
+        return waiting ? (
+          <ActivityIndicator size="small" color="#0000ff" />
+        ) : (
           <Text style={[styles.buttonText, pressed && styles.buttonPressed]}>
             {label}
           </Text>
@@ -34,6 +46,10 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderRadius: 20,
     backgroundColor: palette.blue63,
+    opacity: 1,
+  },
+  buttonDisabled: {
+    opacity: 0.6,
   },
   buttonText: {
     ...textVariants.heading,
