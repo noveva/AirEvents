@@ -40,7 +40,7 @@ const buttonIconStyles = StyleSheet.create({
     color: palette.white,
   },
   textPressed: {
-    color: palette.opaqueWhite,
+    color: palette.grey,
   },
 });
 

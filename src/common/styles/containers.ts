@@ -4,10 +4,10 @@ import spacingUtils from './spacing';
 const containerUtils = {
   main: {
     flex: 1,
-    backgroundColor: palette.lightBlue,
+    backgroundColor: palette.blue100,
   },
   withPadding: {
-    ...spacingUtils.padding12,
+    ...spacingUtils.paddingH12,
   },
 };
 

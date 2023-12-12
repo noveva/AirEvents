@@ -3,7 +3,7 @@ import {StyleSheet, Text, View} from 'react-native';
 import {palette} from '../common/styles/colors';
 import textVariants from '../common/styles/text';
 import ButtonIcon from '../common/components/ButtonIcon';
-import EventModal from './components/EventModal';
+import EventModal from './components/EventModal/EventModal';
 
 const listItems = [
   {title: 'Asdflkja'},
@@ -26,7 +26,7 @@ function Events(): React.JSX.Element {
         <View
           style={[
             {
-              backgroundColor: palette.opaqueBlue,
+              backgroundColor: palette.blue84,
               marginTop: 10,
               padding: 10,
               borderRadius: 20,
@@ -57,7 +57,7 @@ const eventStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 30,
-    backgroundColor: '#f6553e',
+    backgroundColor: palette.orange,
     position: 'absolute',
     bottom: 0,
     right: 0,

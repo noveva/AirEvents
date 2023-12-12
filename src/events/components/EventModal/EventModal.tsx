@@ -1,10 +1,10 @@
 import React from 'react';
-import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {SafeAreaView, StyleSheet, View} from 'react-native';
 import Modal from 'react-native-modal';
-import textVariants from '../../common/styles/text';
-import spacingUtils from '../../common/styles/spacing';
-import containerUtils from '../../common/styles/containers';
-import ButtonIcon from '../../common/components/ButtonIcon';
+import spacingUtils from '../../../common/styles/spacing';
+import containerUtils from '../../../common/styles/containers';
+import ButtonIcon from '../../../common/components/ButtonIcon';
+import EventForm from './components/EventForm';
 
 type Props = {isVisible: boolean; onClose: () => void};
 
@@ -26,9 +26,7 @@ function EventModal({isVisible, onClose}: Props): React.JSX.Element {
             style={styles.backButton}
             onPress={onClose}
           />
-          <Text style={[{marginTop: 20}, textVariants.body]}>
-            I am the modal content!
-          </Text>
+          <EventForm />
         </View>
       </SafeAreaView>
     </Modal>
@@ -51,5 +49,6 @@ const styles = StyleSheet.create({
   },
   backButton: {
     alignSelf: 'flex-start',
+    ...spacingUtils.paddingT6,
   },
 });

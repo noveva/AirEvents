@@ -1,9 +1,12 @@
+// numbers on blue are percentages of blue based of RGB
 const palette = {
-  accentOrange: '#f6553e',
-  lightBlue: 'rgb(48, 148, 255)',
-  opaqueBlue: 'rgba(0, 14, 135, 0.2)',
-  white: 'rgba(255, 255, 255, 1)',
-  opaqueWhite: 'rgba(255, 255, 255, 0.5)',
+  blue100: '#3094ff',
+  blue95: '#0072ee',
+  blue84: '#275dd2',
+  blue63: '#1a489e',
+  orange: '#f6553e',
+  white: '#ffffff',
+  grey: '#e5e5e5',
 };
 
 export {palette};
