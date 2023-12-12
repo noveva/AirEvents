@@ -41,6 +41,6 @@ const styles = StyleSheet.create({
     ...spacingUtils.paddingV8,
     ...spacingUtils.marginV4,
     borderRadius: 12,
-    backgroundColor: palette.blue95,
+    backgroundColor: palette.blue100,
   },
 });
