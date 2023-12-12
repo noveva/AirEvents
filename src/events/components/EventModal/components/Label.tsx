@@ -22,7 +22,7 @@ export default Label;
 
 const styles = StyleSheet.create({
   container: {
-    ...spacingUtils.paddingT6,
+    ...spacingUtils.marginV6,
   },
   text: {
     ...textVariants.heading,

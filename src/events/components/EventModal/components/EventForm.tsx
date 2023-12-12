@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import EventFormGroup from './FormGroup';
 import spacingUtils from '../../../../common/styles/spacing';
+import Button from '../../../../common/components/Button';
 
 interface Event {
   locationId: EventLocation;
@@ -73,6 +74,14 @@ function EventForm(): React.JSX.Element {
         values={timestampOptions}
         onPress={setStartTimestamp}
       />
+      <View style={styles.buttonRow}>
+        <Button
+          label="Submit"
+          onPress={() => {
+            console.log('clicked');
+          }}
+        />
+      </View>
     </View>
   );
 }
@@ -81,6 +90,11 @@ export default EventForm;
 
 const styles = StyleSheet.create({
   container: {
+    ...spacingUtils.marginV6,
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
     ...spacingUtils.marginV6,
   },
 });
