@@ -49,7 +49,9 @@ const styles = StyleSheet.create({
     opacity: 1,
   },
   buttonDisabled: {
+    backgroundColor: palette.greyDark,
     opacity: 0.6,
+    color: palette.grey,
   },
   buttonText: {
     ...textVariants.heading,

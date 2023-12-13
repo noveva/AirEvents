@@ -7,6 +7,7 @@ const palette = {
   orange: '#f6553e',
   white: '#ffffff',
   grey: '#e5e5e5',
+  greyDark: '#484848',
 };
 
 export {palette};
