@@ -5,8 +5,15 @@ import spacingUtils from '../styles/spacing';
 import {palette} from '../styles/colors';
 import textVariants from '../styles/text';
 
+enum ButtonSize {
+  large = 'large',
+}
+
+type ButtonSizeString = ButtonSize.large;
+
 type Props = {
   label: string;
+  size?: ButtonSizeString;
   disabled?: boolean;
   waiting?: boolean;
   onPress: (event: GestureResponderEvent) => void;
@@ -14,6 +21,7 @@ type Props = {
 
 function Button({
   label,
+  size = ButtonSize.large,
   disabled = false,
   waiting = false,
   onPress,
@@ -22,10 +30,10 @@ function Button({
     <Pressable
       disabled={disabled}
       onPress={onPress}
-      style={[styles.button, disabled && styles.buttonDisabled]}>
+      style={[styles.button, disabled && styles.buttonDisabled, styles[size]]}>
       {({pressed}) => {
         return waiting ? (
-          <ActivityIndicator size="small" color="#0000ff" />
+          <ActivityIndicator size="small" color={palette.white} />
         ) : (
           <Text style={[styles.buttonText, pressed && styles.buttonPressed]}>
             {label}
@@ -59,5 +67,9 @@ const styles = StyleSheet.create({
   },
   buttonPressed: {
     color: palette.grey,
+  },
+  large: {
+    width: 120,
+    alignItems: 'center',
   },
 });
