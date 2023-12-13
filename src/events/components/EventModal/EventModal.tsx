@@ -1,5 +1,5 @@
 import React from 'react';
-import {SafeAreaView, StyleSheet, View} from 'react-native';
+import {Alert, SafeAreaView, StyleSheet, View} from 'react-native';
 import spacingUtils from '../../../common/styles/spacing';
 import containerUtils from '../../../common/styles/containers';
 import ButtonIcon from '../../../common/components/ButtonIcon';
@@ -20,6 +20,13 @@ function EventModal({onClose}: Props): React.JSX.Element {
 
   if (status === RequestStatus.fetched) {
     onClose();
+  }
+
+  if (status === RequestStatus.error) {
+    const message = error || 'Something went wrong';
+    Alert.alert('Could not create event', message, [
+      {text: 'OK', onPress: () => console.log(message)},
+    ]);
   }
 
   return (
