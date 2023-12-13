@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import EventFormGroup from './FormGroup';
 import spacingUtils from '../../../../common/styles/spacing';
 import Button from '../../../../common/components/Button';
 import {getUnixEpoch} from '../../../../api/Utils';
+import {RequestStatus, RequestStatusString} from '../../../../api/RequestTypes';
 import {
   EVENTS,
   Event,
@@ -11,9 +11,7 @@ import {
   EventType,
   LOCATIONS,
 } from '../../../EventsTypes';
-import usePost from '../../../../api/PostRequest';
-import {RequestStatus} from '../../../../api/RequestTypes';
-import {EVENTS_API} from '../../../../api/Endpoints';
+import EventFormGroup from './FormGroup';
 
 type TimeStamp = {
   label: string;
@@ -31,13 +29,17 @@ const TIMESTAMPS: TimeStamp[] = [
   {label: '1h ago', value: 60 * 60},
 ];
 
-function EventForm(): React.JSX.Element {
+type Props = {
+  status: RequestStatusString;
+  onSubmit: (eventData: Event) => Promise<void>;
+};
+
+function EventForm({status, onSubmit}: Props): React.JSX.Element {
   const [event, setEvent] = useState<EventType>();
   const [location, setLocation] = useState<EventLocation>(LOCATIONS[0]);
   const [startTimestamp, setStartTimestamp] = useState<string>(
     TIMESTAMPS[0].label,
   );
-  const {status, error, post} = usePost(EVENTS_API.add);
   const timestampOptions = TIMESTAMPS.map(stamp => stamp.label);
   const isValidEvent: boolean = !!event && !!location && !!startTimestamp;
 
@@ -46,13 +48,13 @@ function EventForm(): React.JSX.Element {
     return stamp ? getUnixEpoch(stamp.value) : 0;
   }
 
-  async function submit() {
+  function submit() {
     const data: Event = {
       startTimestamp: getTimeStamp(startTimestamp),
       eventType: event as EventType,
       locationId: location,
     };
-    await post(data);
+    onSubmit(data);
   }
 
   return (

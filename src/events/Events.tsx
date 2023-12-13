@@ -1,9 +1,12 @@
 import React, {useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+import Modal from 'react-native-modal';
 import {palette} from '../common/styles/colors';
 import textVariants from '../common/styles/text';
 import ButtonIcon from '../common/components/ButtonIcon';
 import EventModal from './components/EventModal/EventModal';
+import containerUtils from '../common/styles/containers';
+import spacingUtils from '../common/styles/spacing';
 
 const listItems = [
   {title: 'Asdflkja'},
@@ -36,7 +39,16 @@ function Events(): React.JSX.Element {
           <Text style={textVariants.body}>{item.title}</Text>
         </View>
       ))}
-      <EventModal isVisible={isModalVisible} onClose={toggleModal} />
+      <Modal
+        style={eventStyles.modal}
+        isVisible={isModalVisible}
+        animationIn="slideInRight"
+        animationOut="slideOutRight"
+        animationInTiming={800}
+        animationOutTiming={800}
+        hasBackdrop={false}>
+        {isModalVisible && <EventModal onClose={toggleModal} />}
+      </Modal>
       <ButtonIcon
         icon="add"
         size={40}
@@ -50,6 +62,10 @@ function Events(): React.JSX.Element {
 const eventStyles = StyleSheet.create({
   main: {
     flex: 1,
+  },
+  modal: {
+    ...containerUtils.main,
+    ...spacingUtils.margin0,
   },
   addButton: {
     height: 60,
