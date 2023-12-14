@@ -1,21 +1,14 @@
-import {useReducer} from 'react';
+import {HttpRequestMethods, getProtocol, getRequestBody} from './Utils';
 import {
   ActionType,
-  FetchReducerAction,
+  useRequestReducer,
+  RequestState,
   RequestStatus,
-} from './RequestTypes';
-import {HttpRequestMethods, getProtocol, getRequestBody} from './Utils';
+} from './RequestReducer';
 
-type PostRequestState = {
-  status:
-    | RequestStatus.idle
-    | RequestStatus.fetching
-    | RequestStatus.fetched
-    | RequestStatus.error;
-  error: string | null;
+interface PostRequestState extends RequestState {
   post: (body: {}) => Promise<void>;
-  data?: {};
-};
+}
 
 function usePost(url: string) {
   const post = async (data: {}) => {
@@ -39,29 +32,8 @@ function usePost(url: string) {
     post,
   };
 
-  const [postState, dispatch] = useReducer(
-    (state: PostRequestState, action: FetchReducerAction): PostRequestState => {
-      switch (action.type) {
-        case ActionType.fetching:
-          return {...initialState, status: RequestStatus.fetching};
-        case ActionType.fetched:
-          return {
-            ...initialState,
-            status: RequestStatus.fetched,
-            data: action.payload,
-          };
-        case ActionType.error:
-          return {
-            ...initialState,
-            status: RequestStatus.error,
-            error: action.payload,
-          };
-        default:
-          return state;
-      }
-    },
-    initialState,
-  );
+  const [postState, dispatch] =
+    useRequestReducer<PostRequestState>(initialState);
 
   if (!url || !url.trim()) {
     dispatch({type: ActionType.error, payload: 'Cannot POST: no url provided'});
