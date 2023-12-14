@@ -48,8 +48,8 @@ function EventListItem({
   }
 
   useEffect(() => {
-    if (status === RequestStatus.fetched) {
-      onUpdate({...data});
+    if (status === RequestStatus.fetched && data) {
+      onUpdate(data);
     }
   }, [status, data, onUpdate]);
 
