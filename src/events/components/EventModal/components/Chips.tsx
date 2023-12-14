@@ -4,37 +4,42 @@ import textVariants from '../../../../common/styles/text';
 import {palette} from '../../../../common/styles/colors';
 import spacingUtils from '../../../../common/styles/spacing';
 
-type Props = {
-  values: readonly string[];
-  selected: string;
+export type ChipValue<T> = {id: string; label: string; value: T};
+export type ChipValues<T> = ChipValue<T>[];
+
+type Props<T> = {
+  options: ChipValues<T>;
+  selected?: string | number;
   labelledBy: string;
-  onPress: (event: string) => void;
+  onPress: (value: ChipValue<T>) => void;
 };
 
-function Chips({
-  values,
+// TODO refactor to add keys, forgot
+function Chips<T>({
+  options,
   selected,
   labelledBy,
   onPress,
-}: Props): React.JSX.Element {
+}: Props<T>): React.JSX.Element {
   return (
     <View
       role="radiogroup"
       accessibilityLabelledBy={labelledBy}
       style={styles.flexRow}>
-      {values.map(value => (
+      {options.map(option => (
         <Pressable
-          style={[styles.chip, selected === value && styles.selected]}
+          key={option.id}
+          style={[styles.chip, selected === option.id && styles.selected]}
           onPress={event => {
             event.preventDefault();
-            onPress(value);
+            onPress(option);
           }}>
           {({pressed}) => {
             return (
               <Text
                 role="radio"
                 style={[textVariants.body, pressed && styles.textPressed]}>
-                {value}
+                {option.label}
               </Text>
             );
           }}

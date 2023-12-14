@@ -1,30 +1,30 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import Chips from './Chips';
+import Chips, {ChipValue, ChipValues} from './Chips';
 import Label from './Label';
 import {palette} from '../../../../common/styles/colors';
 import spacingUtils from '../../../../common/styles/spacing';
 
-type Props = {
+type Props<T> = {
   groupId: string;
   label: string;
-  values: readonly string[];
-  selected?: string;
+  options: ChipValues<T>;
+  selected?: ChipValue<T>['id'];
   onPress: (value: any) => any;
 };
 
-function EventFormGroup({
+function EventFormGroup<T>({
   groupId,
   label,
-  values,
-  selected = '',
+  options,
+  selected,
   onPress,
-}: Props): React.JSX.Element {
+}: Props<T>): React.JSX.Element {
   return (
     <View style={styles.group}>
       <Label text={label} nativeID={groupId} />
       <Chips
-        values={values}
+        options={options}
         selected={selected}
         labelledBy={groupId}
         onPress={onPress}

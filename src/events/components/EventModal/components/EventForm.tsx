@@ -12,6 +12,7 @@ import {
   LOCATIONS,
 } from '../../../EventsTypes';
 import EventFormGroup from './FormGroup';
+import {ChipValue, ChipValues} from './Chips';
 
 type TimeStamp = {
   label: string;
@@ -35,24 +36,33 @@ type Props = {
 };
 
 function EventForm({status, onSubmit}: Props): React.JSX.Element {
-  const [event, setEvent] = useState<EventType>();
-  const [location, setLocation] = useState<EventLocation>(LOCATIONS[0]);
-  const [startTimestamp, setStartTimestamp] = useState<string>(
-    TIMESTAMPS[0].label,
+  const eventOptions: ChipValues<string> = mapOptions(EVENTS);
+  const locationOptions: ChipValues<string> = mapOptions(LOCATIONS);
+  const timestampOptions: ChipValues<number> = TIMESTAMPS.map(
+    ({label, value}) => ({id: value.toString(), label, value}),
   );
-  const timestampOptions = TIMESTAMPS.map(stamp => stamp.label);
+  const [event, setEvent] = useState<ChipValue<string>>();
+  const [location, setLocation] = useState<ChipValue<string>>(
+    locationOptions[0],
+  );
+  const [startTimestamp, setStartTimestamp] = useState<ChipValue<number>>(
+    timestampOptions[0],
+  );
   const isValidEvent: boolean = !!event && !!location && !!startTimestamp;
 
-  function getTimeStamp(selectedLabel: string): number {
-    const stamp = TIMESTAMPS.find(({label}) => label === selectedLabel);
-    return stamp ? getUnixEpoch(stamp.value) : 0;
+  function mapOptions(values: readonly string[]) {
+    return values.map(value => ({
+      label: value,
+      id: value,
+      value,
+    }));
   }
 
   function submit() {
     const data: Event = {
-      startTimestamp: getTimeStamp(startTimestamp),
-      eventType: event as EventType,
-      locationId: location,
+      startTimestamp: getUnixEpoch(startTimestamp.value),
+      eventType: event?.value as EventType,
+      locationId: location.value as EventLocation,
     };
     onSubmit(data);
   }
@@ -62,22 +72,22 @@ function EventForm({status, onSubmit}: Props): React.JSX.Element {
       <EventFormGroup
         groupId="selectLocation"
         label="Location"
-        values={LOCATIONS}
-        selected={location}
+        options={locationOptions}
+        selected={location.id}
         onPress={setLocation}
       />
       <EventFormGroup
         groupId="selectEvent"
         label="Event"
-        values={EVENTS}
-        selected={event}
+        options={eventOptions}
+        selected={event?.id}
         onPress={setEvent}
       />
       <EventFormGroup
         groupId="selectStart"
         label="Started"
-        selected={startTimestamp}
-        values={timestampOptions}
+        selected={startTimestamp.id}
+        options={timestampOptions}
         onPress={setStartTimestamp}
       />
       <View style={styles.buttonRow}>
