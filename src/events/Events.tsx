@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {ScrollView, StyleSheet, View} from 'react-native';
 import Modal from 'react-native-modal';
 import {palette} from '../common/styles/colors';
 import ButtonIcon from '../common/components/ButtonIcon';
@@ -16,10 +16,20 @@ function Events(): React.JSX.Element {
   }
 
   return (
-    <View style={eventStyles.main}>
-      <EventList />
+    <View style={styles.main}>
+      <ScrollView
+        contentInsetAdjustmentBehavior="automatic"
+        contentContainerStyle={styles.container}>
+        <EventList />
+      </ScrollView>
+      <ButtonIcon
+        icon="add"
+        size={40}
+        style={styles.addButton}
+        onPress={toggleModal}
+      />
       <Modal
-        style={eventStyles.modal}
+        style={styles.modal}
         isVisible={isModalVisible}
         animationIn="slideInRight"
         animationOut="slideOutRight"
@@ -28,19 +38,16 @@ function Events(): React.JSX.Element {
         hasBackdrop={false}>
         {isModalVisible && <EventModal onClose={toggleModal} />}
       </Modal>
-      <ButtonIcon
-        icon="add"
-        size={40}
-        style={eventStyles.addButton}
-        onPress={toggleModal}
-      />
     </View>
   );
 }
 
-const eventStyles = StyleSheet.create({
+const styles = StyleSheet.create({
   main: {
     flex: 1,
+  },
+  container: {
+    ...containerUtils.withPadding,
   },
   modal: {
     ...containerUtils.main,
@@ -54,8 +61,8 @@ const eventStyles = StyleSheet.create({
     borderRadius: 30,
     backgroundColor: palette.orange,
     position: 'absolute',
-    bottom: 0,
-    right: 0,
+    bottom: spacingUtils.marginR18.marginRight,
+    right: spacingUtils.marginR18.marginRight,
   },
 });
 

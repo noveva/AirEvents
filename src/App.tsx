@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   SafeAreaView,
-  ScrollView,
   StatusBar,
   StyleSheet,
   useColorScheme,
@@ -18,11 +17,7 @@ function App(): React.JSX.Element {
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={containerUtils.main.backgroundColor}
       />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        contentContainerStyle={styles.contents}>
-        <Events />
-      </ScrollView>
+      <Events />
     </SafeAreaView>
   );
 }
@@ -32,9 +27,5 @@ export default App;
 const styles = StyleSheet.create({
   wrapper: {
     ...containerUtils.main,
-  },
-  contents: {
-    flex: 1,
-    ...containerUtils.withPadding,
   },
 });
