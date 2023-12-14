@@ -5,6 +5,12 @@ export enum RequestStatus {
   error,
 }
 
+export type RequestStatusString =
+  | RequestStatus.idle
+  | RequestStatus.fetching
+  | RequestStatus.fetched
+  | RequestStatus.error;
+
 export enum ActionType {
   fetching,
   fetched,
@@ -12,11 +18,7 @@ export enum ActionType {
 }
 
 export type RequestState = {
-  status:
-    | RequestStatus.idle
-    | RequestStatus.fetching
-    | RequestStatus.fetched
-    | RequestStatus.error;
+  status: RequestStatusString;
   error: string | null;
   data: any[];
 };
