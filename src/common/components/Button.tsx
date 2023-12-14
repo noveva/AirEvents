@@ -5,11 +5,12 @@ import spacingUtils from '../styles/spacing';
 import {palette} from '../styles/colors';
 import textVariants from '../styles/text';
 
-enum ButtonSize {
+export enum ButtonSize {
   large = 'large',
+  small = 'small',
 }
 
-type ButtonSizeString = ButtonSize.large;
+type ButtonSizeString = ButtonSize.large | ButtonSize.small;
 
 type Props = {
   label: string;
@@ -30,12 +31,21 @@ function Button({
     <Pressable
       disabled={disabled}
       onPress={onPress}
-      style={[styles.button, disabled && styles.buttonDisabled, styles[size]]}>
+      style={[
+        styles.button,
+        disabled && styles.buttonDisabled,
+        buttonThemes[size].button,
+      ]}>
       {({pressed}) => {
         return waiting ? (
           <ActivityIndicator size="small" color={palette.white} />
         ) : (
-          <Text style={[styles.buttonText, pressed && styles.buttonPressed]}>
+          <Text
+            style={[
+              styles.buttonText,
+              buttonThemes[size].text,
+              pressed && styles.buttonPressed,
+            ]}>
             {label}
           </Text>
         );
@@ -49,9 +59,6 @@ export default Button;
 const styles = StyleSheet.create({
   button: {
     alignSelf: 'flex-start',
-    ...spacingUtils.marginV6,
-    ...spacingUtils.paddingH16,
-    paddingVertical: 12,
     borderRadius: 20,
     backgroundColor: palette.blue63,
     opacity: 1,
@@ -62,14 +69,33 @@ const styles = StyleSheet.create({
     color: palette.grey,
   },
   buttonText: {
-    ...textVariants.heading,
     color: palette.white,
   },
   buttonPressed: {
     color: palette.grey,
   },
-  large: {
-    width: 120,
-    alignItems: 'center',
-  },
 });
+
+const buttonThemes = {
+  large: StyleSheet.create({
+    button: {
+      width: 120,
+      alignItems: 'center',
+      ...spacingUtils.marginV6,
+      ...spacingUtils.paddingH16,
+      paddingVertical: 12,
+    },
+    text: {
+      ...textVariants.heading,
+    },
+  }),
+  small: StyleSheet.create({
+    button: {
+      ...spacingUtils.paddingH12,
+      ...spacingUtils.paddingV8,
+    },
+    text: {
+      ...textVariants.caption,
+    },
+  }),
+};
