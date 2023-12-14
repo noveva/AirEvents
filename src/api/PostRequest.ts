@@ -6,11 +6,11 @@ import {
   RequestStatus,
 } from './RequestReducer';
 
-interface PostRequestState extends RequestState {
+interface PostRequestState<T> extends RequestState<T> {
   post: (body: {}) => Promise<void>;
 }
 
-function usePost(url: string) {
+function usePost<T>(url: string) {
   const post = async (data: {}) => {
     dispatch({type: ActionType.fetching});
     const body = getRequestBody(data, HttpRequestMethods.post);
@@ -26,14 +26,14 @@ function usePost(url: string) {
     }
   };
 
-  const initialState: PostRequestState = {
+  const initialState: PostRequestState<T> = {
     status: RequestStatus.idle,
     error: null,
     post,
   };
 
   const [postState, dispatch] =
-    useRequestReducer<PostRequestState>(initialState);
+    useRequestReducer<PostRequestState<T>>(initialState);
 
   if (!url || !url.trim()) {
     dispatch({type: ActionType.error, payload: 'Cannot POST: no url provided'});

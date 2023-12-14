@@ -7,16 +7,17 @@ import {
 } from './RequestReducer';
 import {getProtocol} from './Utils';
 
-function useFetch(url: string, body?: RequestInit) {
+function useFetch<T>(url: string, body?: RequestInit) {
   const cache = useRef<{[key: string]: any}>({});
 
-  const initialState: RequestState = {
+  const initialState: RequestState<T> = {
     status: RequestStatus.idle,
     error: null,
     data: [],
   };
 
-  const [fetchState, dispatch] = useRequestReducer<RequestState>(initialState);
+  const [fetchState, dispatch] =
+    useRequestReducer<RequestState<T>>(initialState);
 
   useEffect(() => {
     let cancelRequest = false;

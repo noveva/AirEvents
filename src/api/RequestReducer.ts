@@ -13,10 +13,10 @@ export type RequestStatusString =
   | RequestStatus.fetched
   | RequestStatus.error;
 
-export interface RequestState {
+export interface RequestState<T> {
   status: RequestStatusString;
   error: string | null;
-  data?: any;
+  data?: T;
 }
 
 export enum ActionType {
