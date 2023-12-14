@@ -1,4 +1,4 @@
-import {HttpRequestMethods, getProtocol, getRequestBody} from './Utils';
+import {HttpRequestMethodString, getProtocol, getRequestBody} from './Utils';
 import {
   ActionType,
   useRequestReducer,
@@ -7,13 +7,21 @@ import {
 } from './RequestReducer';
 
 interface PostRequestState<T> extends RequestState<T> {
-  post: (body: {}) => Promise<void>;
+  mutate: (url: string, body: {}) => Promise<void>;
 }
 
-function usePost<T>(url: string) {
-  const post = async (data: {}) => {
+function useMutate<T>(method: HttpRequestMethodString) {
+  const mutate = async (url: string, data: {}) => {
+    if (!url || !url.trim()) {
+      dispatch({
+        type: ActionType.error,
+        payload: 'Cannot POST: no url provided',
+      });
+      return;
+    }
+
     dispatch({type: ActionType.fetching});
-    const body = getRequestBody(data, HttpRequestMethods.post);
+    const body = getRequestBody(data, method);
     try {
       const response = await fetch(
         `${getProtocol()}localhost:8081${url}`,
@@ -29,17 +37,13 @@ function usePost<T>(url: string) {
   const initialState: PostRequestState<T> = {
     status: RequestStatus.idle,
     error: null,
-    post,
+    mutate,
   };
 
   const [postState, dispatch] =
     useRequestReducer<PostRequestState<T>>(initialState);
 
-  if (!url || !url.trim()) {
-    dispatch({type: ActionType.error, payload: 'Cannot POST: no url provided'});
-  }
-
   return postState;
 }
 
-export default usePost;
+export default useMutate;

@@ -1,26 +1,29 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Alert, SafeAreaView, StyleSheet, View} from 'react-native';
 import spacingUtils from '../../../common/styles/spacing';
 import containerUtils from '../../../common/styles/containers';
 import ButtonIcon from '../../../common/components/ButtonIcon';
 import EventForm from './components/EventForm';
 import {EVENTS_API} from '../../../api/Endpoints';
-import usePost from '../../../api/PostRequest';
+import useMutate from '../../../api/useMutate';
 import {RequestStatus} from '../../../api/RequestReducer';
+import {HttpRequestMethods} from '../../../api/Utils';
 import {Event} from '../../EventsTypes';
 
 type Props = {onClose: () => void};
 
 function EventModal({onClose}: Props): React.JSX.Element {
-  const {status, error, post} = usePost(EVENTS_API.add);
+  const {status, error, mutate} = useMutate(HttpRequestMethods.post);
 
   async function addEvent(data: Event) {
-    await post(data);
+    await mutate(EVENTS_API.add, data);
   }
 
-  if (status === RequestStatus.fetched) {
-    onClose();
-  }
+  useEffect(() => {
+    if (status === RequestStatus.fetched) {
+      onClose();
+    }
+  }, [status, onClose]);
 
   if (status === RequestStatus.error) {
     const message = error || 'Something went wrong';

@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import spacingUtils from '../../../../common/styles/spacing';
 import Button from '../../../../common/components/Button';
-import {getUnixTimestamp} from '../../../../api/Utils';
+import {getUnixNow} from '../../../../api/Utils';
 import {
   RequestStatus,
   RequestStatusString,
@@ -62,8 +62,7 @@ function EventForm({status, onSubmit}: Props): React.JSX.Element {
   }
 
   function getStartTime(secondsAgo: number): number {
-    const now = new Date().getTime();
-    return getUnixTimestamp(now) - secondsAgo;
+    return getUnixNow() - secondsAgo;
   }
 
   function submit() {
