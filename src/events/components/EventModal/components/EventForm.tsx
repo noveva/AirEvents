@@ -2,8 +2,11 @@ import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import spacingUtils from '../../../../common/styles/spacing';
 import Button from '../../../../common/components/Button';
-import {getUnixEpoch} from '../../../../api/Utils';
-import {RequestStatus, RequestStatusString} from '../../../../api/RequestTypes';
+import {getUnixTimestamp} from '../../../../api/Utils';
+import {
+  RequestStatus,
+  RequestStatusString,
+} from '../../../../api/RequestReducer';
 import {
   EVENTS,
   Event,
@@ -58,9 +61,14 @@ function EventForm({status, onSubmit}: Props): React.JSX.Element {
     }));
   }
 
+  function getStartTime(secondsAgo: number): number {
+    const now = new Date().getTime();
+    return getUnixTimestamp(now) - secondsAgo;
+  }
+
   function submit() {
     const data: Event = {
-      startTimestamp: getUnixEpoch(startTimestamp.value),
+      startTimestamp: getStartTime(startTimestamp.value),
       eventType: event?.value as EventType,
       locationId: location.value as EventLocation,
     };

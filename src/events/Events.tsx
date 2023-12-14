@@ -1,20 +1,12 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import Modal from 'react-native-modal';
 import {palette} from '../common/styles/colors';
-import textVariants from '../common/styles/text';
 import ButtonIcon from '../common/components/ButtonIcon';
 import EventModal from './components/EventModal/EventModal';
 import containerUtils from '../common/styles/containers';
 import spacingUtils from '../common/styles/spacing';
-
-const listItems = [
-  {title: 'Asdflkja'},
-  {title: 'Asdflkja flk'},
-  {title: 'Asd flkja sd flk'},
-  {title: 'flkj Asdflkja'},
-  {title: 'A sdflk ja'},
-];
+import EventList from './components/EventList';
 
 function Events(): React.JSX.Element {
   const [isModalVisible, setModalVisible] = useState(false);
@@ -25,20 +17,7 @@ function Events(): React.JSX.Element {
 
   return (
     <View style={eventStyles.main}>
-      {listItems.map(item => (
-        <View
-          style={[
-            {
-              backgroundColor: palette.blue84,
-              marginTop: 10,
-              padding: 10,
-              borderRadius: 20,
-            },
-            eventStyles.main,
-          ]}>
-          <Text style={textVariants.body}>{item.title}</Text>
-        </View>
-      ))}
+      <EventList />
       <Modal
         style={eventStyles.modal}
         isVisible={isModalVisible}

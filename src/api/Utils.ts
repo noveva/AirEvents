@@ -21,6 +21,6 @@ export function getProtocol(): string {
 }
 
 // number of seconds since epoch
-export function getUnixEpoch(secondsAgo: number): number {
-  return Math.floor(Date.now() / 1000) - secondsAgo;
+export function getUnixTimestamp(JSTimestamp: number): number {
+  return Math.floor(JSTimestamp / 1000);
 }

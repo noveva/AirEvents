@@ -6,7 +6,7 @@ import ButtonIcon from '../../../common/components/ButtonIcon';
 import EventForm from './components/EventForm';
 import {EVENTS_API} from '../../../api/Endpoints';
 import usePost from '../../../api/PostRequest';
-import {RequestStatus} from '../../../api/RequestTypes';
+import {RequestStatus} from '../../../api/RequestReducer';
 import {Event} from '../../EventsTypes';
 
 type Props = {onClose: () => void};
