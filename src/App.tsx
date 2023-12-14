@@ -6,32 +6,35 @@ import {
   StyleSheet,
   useColorScheme,
 } from 'react-native';
+import containerUtils from './common/styles/containers';
 import Events from './events/Events';
-import {palette} from './common/styles/colors';
 
-function App(): JSX.Element {
+function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
 
   return (
-    <SafeAreaView style={containerStyles.main}>
+    <SafeAreaView style={styles.wrapper}>
       <StatusBar
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={containerStyles.main.backgroundColor}
+        backgroundColor={containerUtils.main.backgroundColor}
       />
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
-        contentContainerStyle={containerStyles.main}>
+        contentContainerStyle={styles.contents}>
         <Events />
       </ScrollView>
     </SafeAreaView>
   );
 }
 
-const containerStyles = StyleSheet.create({
-  main: {
+export default App;
+
+const styles = StyleSheet.create({
+  wrapper: {
+    ...containerUtils.main,
+  },
+  contents: {
     flex: 1,
-    backgroundColor: palette.lightBlue,
+    ...containerUtils.withPadding,
   },
 });
-
-export default App;

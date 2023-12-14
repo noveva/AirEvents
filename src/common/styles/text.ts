@@ -6,6 +6,14 @@ const textVariants = StyleSheet.create({
     fontSize: 16,
     color: palette.white,
   },
+  heading: {
+    fontSize: 20,
+    color: palette.white,
+  },
+  caption: {
+    fontSize: 14,
+    color: palette.white,
+  },
 });
 
 export default textVariants;

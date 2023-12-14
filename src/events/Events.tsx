@@ -1,9 +1,12 @@
 import React, {useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import ButtonIcon from './components/ButtonIcon';
-import EventModal from './components/EventModal';
+import Modal from 'react-native-modal';
 import {palette} from '../common/styles/colors';
 import textVariants from '../common/styles/text';
+import ButtonIcon from '../common/components/ButtonIcon';
+import EventModal from './components/EventModal/EventModal';
+import containerUtils from '../common/styles/containers';
+import spacingUtils from '../common/styles/spacing';
 
 const listItems = [
   {title: 'Asdflkja'},
@@ -13,7 +16,7 @@ const listItems = [
   {title: 'A sdflk ja'},
 ];
 
-function Events(): JSX.Element {
+function Events(): React.JSX.Element {
   const [isModalVisible, setModalVisible] = useState(false);
 
   function toggleModal() {
@@ -21,32 +24,59 @@ function Events(): JSX.Element {
   }
 
   return (
-    <View style={containerStyles.main}>
+    <View style={eventStyles.main}>
       {listItems.map(item => (
         <View
           style={[
             {
-              backgroundColor: palette.opaqueBlue,
+              backgroundColor: palette.blue84,
               marginTop: 10,
-              marginLeft: 20,
-              marginRight: 20,
               padding: 10,
               borderRadius: 20,
             },
-            containerStyles.main,
+            eventStyles.main,
           ]}>
           <Text style={textVariants.body}>{item.title}</Text>
         </View>
       ))}
-      <EventModal isVisible={isModalVisible} onClose={toggleModal} />
-      <ButtonIcon onPress={toggleModal} />
+      <Modal
+        style={eventStyles.modal}
+        isVisible={isModalVisible}
+        animationIn="slideInRight"
+        animationOut="slideOutRight"
+        animationInTiming={800}
+        animationOutTiming={800}
+        hasBackdrop={false}>
+        {isModalVisible && <EventModal onClose={toggleModal} />}
+      </Modal>
+      <ButtonIcon
+        icon="add"
+        size={40}
+        style={eventStyles.addButton}
+        onPress={toggleModal}
+      />
     </View>
   );
 }
 
-const containerStyles = StyleSheet.create({
+const eventStyles = StyleSheet.create({
   main: {
     flex: 1,
+  },
+  modal: {
+    ...containerUtils.main,
+    ...spacingUtils.margin0,
+  },
+  addButton: {
+    height: 60,
+    width: 60,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 30,
+    backgroundColor: palette.orange,
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
   },
 });
 
