@@ -27,15 +27,17 @@ function Button({
   waiting = false,
   onPress,
 }: Props): React.JSX.Element {
+  function getPressableStyle({pressed}: {pressed: boolean}) {
+    return {
+      ...styles.button,
+      ...buttonThemes[size].button,
+      ...(disabled ? styles.buttonDisabled : {}),
+      ...(pressed ? styles.buttonPressed : {}),
+    };
+  }
+
   return (
-    <Pressable
-      disabled={disabled}
-      onPress={onPress}
-      style={[
-        styles.button,
-        disabled && styles.buttonDisabled,
-        buttonThemes[size].button,
-      ]}>
+    <Pressable disabled={disabled} onPress={onPress} style={getPressableStyle}>
       {({pressed}) => {
         return waiting ? (
           <ActivityIndicator size="small" color={palette.white} />
@@ -44,7 +46,7 @@ function Button({
             style={[
               styles.buttonText,
               buttonThemes[size].text,
-              pressed && styles.buttonPressed,
+              pressed && styles.buttonTextPressed,
             ]}>
             {label}
           </Text>
@@ -68,10 +70,13 @@ const styles = StyleSheet.create({
     opacity: 0.6,
     color: palette.grey,
   },
+  buttonPressed: {
+    opacity: 0.8,
+  },
   buttonText: {
     color: palette.white,
   },
-  buttonPressed: {
+  buttonTextPressed: {
     color: palette.grey,
   },
 });

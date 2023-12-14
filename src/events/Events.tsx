@@ -6,7 +6,7 @@ import ButtonIcon from '../common/components/ButtonIcon';
 import EventModal from './components/EventModal/EventModal';
 import containerUtils from '../common/styles/containers';
 import spacingUtils from '../common/styles/spacing';
-import EventList from './components/EventList';
+import EventList from './components/EventList/EventList';
 
 function Events(): React.JSX.Element {
   const [isModalVisible, setModalVisible] = useState(false);
