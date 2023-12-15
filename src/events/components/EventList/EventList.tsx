@@ -1,5 +1,11 @@
 import React, {useState} from 'react';
-import {Alert, ScrollView, StyleSheet, Text} from 'react-native';
+import {
+  Alert,
+  FlatList,
+  ListRenderItemInfo,
+  StyleSheet,
+  Text,
+} from 'react-native';
 import {getUnixNow} from '../../../api/Utils';
 import textVariants from '../../../common/styles/text';
 import spacingUtils from '../../../common/styles/spacing';
@@ -19,6 +25,9 @@ function EventList(): React.JSX.Element {
     data = [],
   } = useFetch<Event[]>(EVENTS_API.fetch(from24hrsAgo, toNow));
   const [updatedEventId, setUpdatedEventId] = useState<string>();
+  const eventsList = data.sort(
+    (eventA, eventB) => eventB.startTimestamp - eventA.startTimestamp,
+  ); //latest events first
 
   if (status === RequestStatus.error) {
     const message = error || 'Something went wrong';
@@ -31,30 +40,31 @@ function EventList(): React.JSX.Element {
     setUpdatedEventId(event.id);
   }
 
+  function renderItem({item}: ListRenderItemInfo<Event>) {
+    return (
+      <EventListItem
+        key={item.id as string}
+        id={item.id}
+        eventType={item.eventType as EventType}
+        locationId={item.locationId as EventLocation}
+        startTimestamp={item.startTimestamp}
+        endTimestamp={item.endTimestamp}
+        onUpdate={updateList}
+      />
+    );
+  }
+
   return (
-    <ScrollView
-      contentInsetAdjustmentBehavior="automatic"
-      contentContainerStyle={styles.container}>
+    <>
       <Text style={styles.heading}>Today</Text>
-      {data.length > 0 &&
-        data
-          .sort(
-            (eventA, eventB) => eventB.startTimestamp - eventA.startTimestamp,
-          ) //latest events first
-          .map(event => {
-            return (
-              <EventListItem
-                key={event.id as string}
-                id={event.id}
-                eventType={event.eventType as EventType}
-                locationId={event.locationId as EventLocation}
-                startTimestamp={event.startTimestamp}
-                endTimestamp={event.endTimestamp}
-                onUpdate={updateList}
-              />
-            );
-          })}
-    </ScrollView>
+      <FlatList
+        data={eventsList}
+        renderItem={renderItem}
+        keyExtractor={event => event.id as string}
+        onRefresh={() => updateList(data[data.length - 1])}
+        refreshing={status === RequestStatus.fetching}
+      />
+    </>
   );
 }
 
