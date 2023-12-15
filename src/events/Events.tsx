@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import Modal from 'react-native-modal';
 import {palette} from '../common/styles/colors';
 import ButtonIcon from '../common/components/ButtonIcon';
@@ -17,11 +17,7 @@ function Events(): React.JSX.Element {
 
   return (
     <View style={styles.main}>
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        contentContainerStyle={styles.container}>
-        <EventList />
-      </ScrollView>
+      <EventList />
       <ButtonIcon
         icon="add"
         size={40}
@@ -45,9 +41,6 @@ function Events(): React.JSX.Element {
 const styles = StyleSheet.create({
   main: {
     flex: 1,
-  },
-  container: {
-    ...containerUtils.withPadding,
   },
   modal: {
     ...containerUtils.main,

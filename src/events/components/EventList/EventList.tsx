@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
-import {Alert, StyleSheet, Text} from 'react-native';
+import {Alert, ScrollView, StyleSheet, Text} from 'react-native';
 import {getUnixNow} from '../../../api/Utils';
 import textVariants from '../../../common/styles/text';
 import spacingUtils from '../../../common/styles/spacing';
+import containerUtils from '../../../common/styles/containers';
 import {RequestStatus} from '../../../api/RequestReducer';
 import {EVENTS_API} from '../../../api/Endpoints';
 import useFetch from '../../../api/FetchRequest';
@@ -31,7 +32,9 @@ function EventList(): React.JSX.Element {
   }
 
   return (
-    <>
+    <ScrollView
+      contentInsetAdjustmentBehavior="automatic"
+      contentContainerStyle={styles.container}>
       <Text style={styles.heading}>Today</Text>
       {data.length > 0 &&
         data
@@ -51,7 +54,7 @@ function EventList(): React.JSX.Element {
               />
             );
           })}
-    </>
+    </ScrollView>
   );
 }
 
@@ -63,5 +66,8 @@ const styles = StyleSheet.create({
     ...textVariants.heading,
     ...spacingUtils.marginT16,
     ...spacingUtils.marginB12,
+  },
+  container: {
+    ...containerUtils.withPadding,
   },
 });
