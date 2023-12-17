@@ -54,6 +54,13 @@ function EventList(): React.JSX.Element {
     );
   }
 
+  if (status === RequestStatus.error) {
+    const message = error || 'Something went wrong';
+    Alert.alert('Could not load events', message, [
+      {text: 'OK', onPress: () => console.log(message)},
+    ]);
+  }
+
   return (
     <>
       <Text style={styles.heading}>Today</Text>
