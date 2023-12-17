@@ -63,7 +63,12 @@ function EventList(): React.JSX.Element {
 
   return (
     <>
-      <Text style={styles.heading}>Today</Text>
+      {eventsList.length === 0 && (
+        <View style={styles.messageContainer}>
+          <Text style={styles.message}>No events</Text>
+        </View>
+      )}
+      {eventsList.length > 0 && (
       <FlatList
         data={eventsList}
         renderItem={renderItem}
@@ -71,6 +76,7 @@ function EventList(): React.JSX.Element {
         onRefresh={() => updateList(data[data.length - 1])}
         refreshing={status === RequestStatus.fetching}
       />
+      )}
     </>
   );
 }
@@ -83,6 +89,15 @@ const styles = StyleSheet.create({
     ...textVariants.heading,
     ...spacingUtils.marginT16,
     ...spacingUtils.marginB12,
+  },
+  messageContainer: {
+    flex: 1,
+    ...spacingUtils.marginT16,
+    alignItems: 'center',
+  },
+  message: {
+    ...textVariants.body,
+    color: palette.blue63,
   },
   container: {
     ...containerUtils.withPadding,
