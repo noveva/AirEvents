@@ -52,12 +52,12 @@ function EventList({
 
   return (
     <>
-      {eventsList.length === 0 && (
+      {eventsList.length === 0 && status !== RequestStatus.fetching && (
         <View style={styles.messageContainer}>
           <Text style={styles.message}>No events</Text>
         </View>
       )}
-      {eventsList.length > 0 && (
+      {(eventsList.length > 0 || status === RequestStatus.fetching) && (
         <FlatList
           data={eventsList}
           renderItem={renderItem}
