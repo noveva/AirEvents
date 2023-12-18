@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import spacingUtils from '../../../../common/styles/spacing';
 import Button from '../../../../common/components/Button';
-import {getUnixNow} from '../../../../api/Utils';
+import {getUnixNow} from '../../../../common/utils';
 import {
   RequestStatus,
   RequestStatusString,

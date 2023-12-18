@@ -6,7 +6,7 @@ import {
   StyleSheet,
   Text,
 } from 'react-native';
-import {getUnixNow} from '../../../api/Utils';
+import {getUnixNow} from '../../../common/utils';
 import textVariants from '../../../common/styles/text';
 import spacingUtils from '../../../common/styles/spacing';
 import containerUtils from '../../../common/styles/containers';

@@ -21,13 +21,3 @@ export function getRequestBody(
 export function getProtocol(): string {
   return process.env.NODE_ENV === 'development' ? 'http://' : 'https://';
 }
-
-// number of seconds since epoch
-export function getUnixTimestamp(JSTimestamp: number): number {
-  return Math.floor(JSTimestamp / 1000);
-}
-
-export function getUnixNow() {
-  const now = new Date().getTime();
-  return getUnixTimestamp(now);
-}

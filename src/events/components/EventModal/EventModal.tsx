@@ -7,7 +7,7 @@ import EventForm from './components/EventForm';
 import {EVENTS_API} from '../../../api/Endpoints';
 import useMutate from '../../../api/useMutate';
 import {RequestStatus} from '../../../api/RequestReducer';
-import {HttpRequestMethods} from '../../../api/Utils';
+import {HttpRequestMethods} from '../../../api/utils';
 import {Event} from '../../EventsTypes';
 
 type Props = {onClose: () => void};
