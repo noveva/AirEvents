@@ -10,7 +10,7 @@ import {RequestStatus} from '../../../api/RequestReducer';
 import {HttpRequestMethods} from '../../../api/utils';
 import {Event} from '../../EventsTypes';
 
-type Props = {onClose: () => void};
+type Props = {onClose: (refresh: boolean) => void};
 
 function EventModal({onClose}: Props): React.JSX.Element {
   const {status, error, mutate} = useMutate(HttpRequestMethods.post);
@@ -21,7 +21,7 @@ function EventModal({onClose}: Props): React.JSX.Element {
 
   useEffect(() => {
     if (status === RequestStatus.fetched) {
-      onClose();
+      onClose(true);
     }
   }, [status, onClose]);
 
@@ -39,7 +39,7 @@ function EventModal({onClose}: Props): React.JSX.Element {
           icon="arrow-back"
           size={28}
           style={styles.backButton}
-          onPress={onClose}
+          onPress={() => onClose(false)}
         />
         <EventForm status={status} onSubmit={addEvent} />
       </View>
