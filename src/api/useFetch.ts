@@ -44,7 +44,10 @@ function useFetch<T>(url: string, body?: RequestInit) {
             return;
           }
           if (error) {
-            dispatch({type: ActionType.error, payload: error.message});
+            dispatch({
+              type: ActionType.error,
+              payload: error.message as string,
+            });
           }
         }
       }

@@ -7,7 +7,7 @@ import containerUtils from '../common/styles/containers';
 import spacingUtils from '../common/styles/spacing';
 import {getUnixNow} from '../common/utils';
 import {EVENTS_API} from '../api/Endpoints';
-import useFetch from '../api/FetchRequest';
+import useFetch from '../api/useFetch';
 import EventModal from './components/EventModal/EventModal';
 import EventList from './components/EventList/EventList';
 import {Event} from './EventsTypes';
