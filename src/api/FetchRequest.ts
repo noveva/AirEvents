@@ -5,7 +5,7 @@ import {
   RequestState,
   RequestStatus,
 } from './RequestReducer';
-import {getProtocol} from './Utils';
+import {getProtocol} from './utils';
 
 function useFetch<T>(url: string, body?: RequestInit) {
   const cache = useRef<{[key: string]: any}>({});

@@ -1,4 +1,4 @@
-import {HttpRequestMethodString, getProtocol, getRequestBody} from './Utils';
+import {HttpRequestMethodString, getProtocol, getRequestBody} from './utils';
 import {
   ActionType,
   useRequestReducer,
