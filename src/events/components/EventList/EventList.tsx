@@ -14,6 +14,7 @@ import {RequestState, RequestStatus} from '../../../api/RequestReducer';
 import {palette} from '../../../common/styles/colors';
 import {Event, EventLocation, EventType} from '../../EventsTypes';
 import EventListItem from './EventListItem';
+import EventListHeader from './EventListHeader';
 
 interface Props extends RequestState<Event[]> {
   refresh: () => void;
@@ -52,6 +53,7 @@ function EventList({
 
   return (
     <>
+      <EventListHeader />
       {eventsList.length === 0 && status !== RequestStatus.fetching && (
         <View style={styles.messageContainer}>
           <Text style={styles.message}>No events</Text>
@@ -73,11 +75,8 @@ function EventList({
 export default EventList;
 
 const styles = StyleSheet.create({
-  heading: {
-    textAlign: 'center',
-    ...textVariants.heading,
-    ...spacingUtils.marginT16,
-    ...spacingUtils.marginB12,
+  container: {
+    ...containerUtils.withPadding,
   },
   messageContainer: {
     flex: 1,
@@ -87,8 +86,5 @@ const styles = StyleSheet.create({
   message: {
     ...textVariants.body,
     color: palette.blue63,
-  },
-  container: {
-    ...containerUtils.withPadding,
   },
 });

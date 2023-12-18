@@ -65,6 +65,7 @@ function Events(): React.JSX.Element {
 const styles = StyleSheet.create({
   main: {
     flex: 1,
+    ...containerUtils.withPadding,
   },
   modal: {
     ...containerUtils.main,
