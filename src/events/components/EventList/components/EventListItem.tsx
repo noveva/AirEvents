@@ -1,11 +1,11 @@
 import React, {useContext, useEffect} from 'react';
 import {Text, StyleSheet, Alert, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {getUnixTime} from 'date-fns';
 import Card from '../../../../common/components/Card';
 import textVariants from '../../../../common/styles/text';
 import useMutate from '../../../../api/useMutate';
 import {HttpRequestMethods} from '../../../../api/utils';
-import {getUnixNow} from '../../../../common/utils';
 import {RequestStatus} from '../../../../api/RequestReducer';
 import {EVENTS_API} from '../../../../api/Endpoints';
 import spacingUtils from '../../../../common/styles/spacing';
@@ -40,7 +40,7 @@ function EventListItem({
 
   async function stop() {
     await mutate(EVENTS_API.stop(id as string), {
-      endTimestamp: getUnixNow(),
+      endTimestamp: getUnixTime(new Date()),
     });
   }
 

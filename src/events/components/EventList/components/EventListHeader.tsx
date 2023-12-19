@@ -4,11 +4,15 @@ import ButtonIcon from '../../../../common/components/ButtonIcon';
 import containerUtils from '../../../../common/styles/containers';
 import textVariants from '../../../../common/styles/text';
 import spacingUtils from '../../../../common/styles/spacing';
+import {EventListProps} from '../EventList';
 
 const iconSize = 28;
 
-export default function EventListHeader() {
+export default function EventListHeader({
+  timestamp,
+}: Pick<EventListProps, 'timestamp'>) {
   function loadPreviousDay() {}
+  function loadNextDay() {}
 
   return (
     <View style={styles.row}>
@@ -24,7 +28,7 @@ export default function EventListHeader() {
           style={styles.alignEnd}
           icon="arrow-forward"
           size={iconSize}
-          onPress={loadPreviousDay}
+          onPress={loadNextDay}
         />
       </View>
     </View>

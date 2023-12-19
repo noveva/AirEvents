@@ -16,7 +16,8 @@ import {Event, EventLocation, EventType} from '../../EventsTypes';
 import EventListItem from './components/EventListItem';
 import EventListHeader from './components/EventListHeader';
 
-interface Props extends RequestState<Event[]> {
+export interface EventListProps extends RequestState<Event[]> {
+  timestamp: number;
   refresh: () => void;
 }
 
@@ -24,8 +25,9 @@ function EventList({
   status,
   error,
   data = [],
+  timestamp,
   refresh,
-}: Props): React.JSX.Element {
+}: EventListProps): React.JSX.Element {
   if (status === RequestStatus.error) {
     const message = error || 'Something went wrong';
     Alert.alert('Could not load events', message, [
@@ -48,7 +50,9 @@ function EventList({
 
   return (
     <>
-      <EventListHeader />
+      <View style={styles.container}>
+        <EventListHeader timestamp={timestamp} />
+      </View>
       {data.length === 0 && status !== RequestStatus.fetching && (
         <View style={styles.messageContainer}>
           <Text style={styles.message}>No events</Text>
@@ -56,6 +60,7 @@ function EventList({
       )}
       {(data.length > 0 || status === RequestStatus.fetching) && (
         <FlatList
+          style={styles.container}
           data={data}
           renderItem={renderItem}
           keyExtractor={event => event.id as string}

@@ -1,11 +1,11 @@
 import React, {useEffect, useReducer, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import Modal from 'react-native-modal';
+import {getUnixTime, startOfDay} from 'date-fns';
 import {palette} from '../common/styles/colors';
 import ButtonIcon from '../common/components/ButtonIcon';
 import containerUtils from '../common/styles/containers';
 import spacingUtils from '../common/styles/spacing';
-import {getUnixNow} from '../common/utils';
 import {EVENTS_API} from '../api/Endpoints';
 import useFetch from '../api/useFetch';
 import EventModal from './components/EventModal/EventModal';
@@ -14,8 +14,13 @@ import {Event} from './EventsTypes';
 import {EventsDispatchContext} from './EventsContext';
 import {EventsReducerActionType, eventsReducer} from './EventsReducer';
 
+type FetchEventsParams = {
+  timestamp: number;
+  fetchUrl: string;
+};
+
 function Events(): React.JSX.Element {
-  const [fetchUrl, setFetchUrl] = useState(getUrl());
+  const [{timestamp, fetchUrl}, setFetchUrl] = useState(getUrl());
   const {status, error, data} = useFetch<Event[]>(fetchUrl);
   const [isModalVisible, setModalVisible] = useState(false);
   const [eventsList, dispatch] = useReducer(eventsReducer, []);
@@ -28,15 +33,23 @@ function Events(): React.JSX.Element {
     setModalVisible(!isModalVisible);
   }
 
-  function getUrl() {
-    const toNow = getUnixNow();
-    // TODO get only from midnight of toNow day
-    const from24hrsAgo = toNow - 24 * 60 * 60;
-    return EVENTS_API.fetch(from24hrsAgo, toNow);
+  function getUrl(fetchTo?: Date): FetchEventsParams {
+    const timestampTo = fetchTo ? new Date(fetchTo) : new Date();
+    const midnight = startOfDay(timestampTo);
+    console.log(
+      `fetchTo ${getUnixTime(timestampTo)} from ${getUnixTime(midnight)}`,
+    );
+    return {
+      timestamp: getUnixTime(timestampTo),
+      fetchUrl: EVENTS_API.fetch(
+        getUnixTime(midnight),
+        getUnixTime(timestampTo),
+      ),
+    };
   }
 
-  function fetchList() {
-    setFetchUrl(getUrl());
+  function fetchList(fetchTo?: Date) {
+    setFetchUrl(getUrl(fetchTo));
   }
 
   return (
@@ -46,6 +59,7 @@ function Events(): React.JSX.Element {
           status={status}
           error={error}
           data={eventsList}
+          timestamp={timestamp}
           refresh={fetchList}
         />
         <ButtonIcon
@@ -72,7 +86,6 @@ function Events(): React.JSX.Element {
 const styles = StyleSheet.create({
   main: {
     flex: 1,
-    ...containerUtils.withPadding,
   },
   modal: {
     ...containerUtils.main,
