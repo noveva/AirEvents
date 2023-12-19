@@ -26,10 +26,6 @@ function EventList({
   data = [],
   refresh,
 }: Props): React.JSX.Element {
-  const eventsList = data.sort(
-    (eventA, eventB) => eventB.startTimestamp - eventA.startTimestamp,
-  ); //latest events first
-
   if (status === RequestStatus.error) {
     const message = error || 'Something went wrong';
     Alert.alert('Could not load events', message, [
@@ -46,7 +42,6 @@ function EventList({
         locationId={item.locationId as EventLocation}
         startTimestamp={item.startTimestamp}
         endTimestamp={item.endTimestamp}
-        onUpdate={refresh}
       />
     );
   }
@@ -54,14 +49,14 @@ function EventList({
   return (
     <>
       <EventListHeader />
-      {eventsList.length === 0 && status !== RequestStatus.fetching && (
+      {data.length === 0 && status !== RequestStatus.fetching && (
         <View style={styles.messageContainer}>
           <Text style={styles.message}>No events</Text>
         </View>
       )}
-      {(eventsList.length > 0 || status === RequestStatus.fetching) && (
+      {(data.length > 0 || status === RequestStatus.fetching) && (
         <FlatList
-          data={eventsList}
+          data={data}
           renderItem={renderItem}
           keyExtractor={event => event.id as string}
           onRefresh={refresh}

@@ -15,7 +15,7 @@ export type RequestStatusString =
 
 export interface RequestState<T> {
   status: RequestStatusString;
-  error: string | null;
+  error?: string;
   data?: T;
 }
 

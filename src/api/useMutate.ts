@@ -30,13 +30,15 @@ function useMutate<T>(method: HttpRequestMethodString) {
       const responseData = await response.json();
       dispatch({type: ActionType.fetched, payload: responseData});
     } catch (error) {
-      dispatch({type: ActionType.error, payload: error.message});
+      dispatch({
+        type: ActionType.error,
+        payload: error instanceof Error ? error.message : error,
+      });
     }
   };
 
   const initialState: PostRequestState<T> = {
     status: RequestStatus.idle,
-    error: null,
     mutate,
   };
 

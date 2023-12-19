@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {Text, StyleSheet, Alert, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Card from '../../../common/components/Card';
@@ -14,12 +14,10 @@ import ButtonIcon from '../../../common/components/ButtonIcon';
 import containerUtils from '../../../common/styles/containers';
 import {formatHHmm} from '../../../common/utils';
 import {Event} from '../../EventsTypes';
+import {EventsDispatchContext} from '../../EventsContext';
+import {EventsReducerActionType} from '../../Events';
 
 const iconSize = 16;
-
-interface Props extends Event {
-  onUpdate: () => void;
-}
 
 function EventListItem({
   id,
@@ -27,8 +25,8 @@ function EventListItem({
   locationId,
   startTimestamp,
   endTimestamp,
-  onUpdate,
-}: Props): React.JSX.Element {
+}: Event): React.JSX.Element {
+  const dispatch = useContext(EventsDispatchContext);
   const startTime = formatEventTime(startTimestamp);
   const endTime = endTimestamp && formatEventTime(endTimestamp);
   const {status, error, data, mutate} = useMutate<Event>(
@@ -54,10 +52,10 @@ function EventListItem({
   }
 
   useEffect(() => {
-    if (status === RequestStatus.fetched && data) {
-      onUpdate();
+    if (status === RequestStatus.fetched && data && dispatch) {
+      dispatch({type: EventsReducerActionType.updated, payload: data});
     }
-  }, [status, data, onUpdate]);
+  }, [status, data, dispatch]);
 
   return (
     <Card style={{...styles.row, ...styles.rowFixedHeight}}>

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Alert, SafeAreaView, StyleSheet, View} from 'react-native';
 import spacingUtils from '../../../common/styles/spacing';
 import containerUtils from '../../../common/styles/containers';
@@ -9,27 +9,39 @@ import useMutate from '../../../api/useMutate';
 import {RequestStatus} from '../../../api/RequestReducer';
 import {HttpRequestMethods} from '../../../api/utils';
 import {Event} from '../../EventsTypes';
+import {EventsDispatchContext} from '../../EventsContext';
+import {EventsReducerActionType} from '../../Events';
 
 type Props = {onClose: (refresh: boolean) => void};
 
 function EventModal({onClose}: Props): React.JSX.Element {
-  const {status, error, mutate} = useMutate(HttpRequestMethods.post);
+  const {status, error, data, mutate} = useMutate<{id: string}>(
+    HttpRequestMethods.post,
+  );
+  const [eventData, setEventData] = useState<Event>();
+  const dispatch = useContext(EventsDispatchContext);
 
-  async function addEvent(data: Event) {
-    await mutate(EVENTS_API.add, data);
+  async function addEvent(eventFormData: Event) {
+    await mutate(EVENTS_API.add, eventFormData);
+    setEventData(eventFormData);
   }
 
   useEffect(() => {
-    if (status === RequestStatus.fetched) {
+    if (status === RequestStatus.fetched && dispatch && eventData && data) {
       onClose(true);
+      dispatch({
+        type: EventsReducerActionType.added,
+        payload: {...eventData, ...data},
+      });
     }
-  }, [status, onClose]);
+  }, [status, onClose, dispatch, eventData, data]);
 
   if (status === RequestStatus.error) {
     const message = error || 'Something went wrong';
     Alert.alert('Could not create event', message, [
       {text: 'OK', onPress: () => console.log(message)},
     ]);
+    setEventData(undefined);
   }
 
   return (

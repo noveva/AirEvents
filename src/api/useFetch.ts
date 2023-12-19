@@ -7,13 +7,11 @@ import {
 } from './RequestReducer';
 import {getProtocol} from './utils';
 
-function useFetch<T>(url: string, body?: RequestInit) {
+function useFetch<T>(url: string, body?: RequestInit): RequestState<T> {
   const cache = useRef<{[key: string]: any}>({});
 
   const initialState: RequestState<T> = {
     status: RequestStatus.idle,
-    error: null,
-    data: [],
   };
 
   const [fetchState, dispatch] =
@@ -46,7 +44,7 @@ function useFetch<T>(url: string, body?: RequestInit) {
           if (error) {
             dispatch({
               type: ActionType.error,
-              payload: error.message as string,
+              payload: error instanceof Error ? error.message : error,
             });
           }
         }
