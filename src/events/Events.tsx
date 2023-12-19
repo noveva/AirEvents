@@ -65,6 +65,7 @@ function Events(): React.JSX.Element {
           data={eventsList}
           timestamp={timestamp}
           refresh={fetchList}
+          onEventPress={id => console.log(id)}
         />
         {isTimestampToday && (
           <ButtonIcon

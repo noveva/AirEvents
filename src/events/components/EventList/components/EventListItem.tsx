@@ -1,5 +1,5 @@
 import React, {useContext, useEffect} from 'react';
-import {Text, StyleSheet, Alert, View} from 'react-native';
+import {Text, StyleSheet, Alert, View, Pressable} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {getUnixTime} from 'date-fns';
 import Card from '../../../../common/components/Card';
@@ -16,6 +16,7 @@ import {formatHHmm} from '../../../../common/utils';
 import {Event} from '../../../EventsTypes';
 import {EventsDispatchContext} from '../../../EventsContext';
 import {EventsReducerActionType} from '../../../EventsReducer';
+import {EventListProps} from '../EventList';
 
 const iconSize = 16;
 
@@ -25,7 +26,8 @@ function EventListItem({
   locationId,
   startTimestamp,
   endTimestamp,
-}: Event): React.JSX.Element {
+  onEventPress,
+}: Event & Pick<EventListProps, 'onEventPress'>): React.JSX.Element {
   const dispatch = useContext(EventsDispatchContext);
   const startTime = formatEventTime(startTimestamp);
   const endTime = endTimestamp && formatEventTime(endTimestamp);
@@ -44,6 +46,10 @@ function EventListItem({
     });
   }
 
+  function handlePress() {
+    onEventPress(id as string);
+  }
+
   if (status === RequestStatus.error) {
     const message = error || 'Something went wrong';
     Alert.alert('Could not stop event', message, [
@@ -58,35 +64,37 @@ function EventListItem({
   }, [status, data, dispatch]);
 
   return (
-    <Card style={{...styles.row, ...styles.rowFixedHeight}}>
-      <View style={[styles.cell, styles.row]}>
-        {/* View slightly smaller than the Icon to align with Text */}
-        <View style={styles.icon}>
-          <Icon
-            name={locationId === 'bedroom' ? 'bed' : 'cafe'}
-            size={iconSize + 2}
-            color={palette.white}
-            allowFontScaling={false}
-          />
+    <Pressable onPress={handlePress}>
+      <Card style={{...styles.row, ...styles.rowFixedHeight}}>
+        <View style={[styles.cell, styles.row]}>
+          {/* View slightly smaller than the Icon to align with Text */}
+          <View style={styles.icon}>
+            <Icon
+              name={locationId === 'bedroom' ? 'bed' : 'cafe'}
+              size={iconSize + 2}
+              color={palette.white}
+              allowFontScaling={false}
+            />
+          </View>
+          <Text style={[styles.textWithPadding, styles.heading]}>
+            {eventType}
+          </Text>
         </View>
-        <Text style={[styles.textWithPadding, styles.heading]}>
-          {eventType}
-        </Text>
-      </View>
-      <Text style={[styles.textWithPadding, styles.text]}>{startTime}</Text>
-      <View style={[styles.row, styles.lastCell]}>
-        {endTime ? (
-          <Text style={[styles.text]}>{endTime}</Text>
-        ) : (
-          <ButtonIcon
-            icon="stop"
-            size={iconSize}
-            style={styles.stopButton}
-            onPress={stop}
-          />
-        )}
-      </View>
-    </Card>
+        <Text style={[styles.textWithPadding, styles.text]}>{startTime}</Text>
+        <View style={[styles.row, styles.lastCell]}>
+          {endTime ? (
+            <Text style={[styles.text]}>{endTime}</Text>
+          ) : (
+            <ButtonIcon
+              icon="stop"
+              size={iconSize}
+              style={styles.stopButton}
+              onPress={stop}
+            />
+          )}
+        </View>
+      </Card>
+    </Pressable>
   );
 }
 

@@ -19,6 +19,7 @@ import EventListHeader from './components/EventListHeader';
 export interface EventListProps extends RequestState<Event[]> {
   timestamp: Date;
   refresh: (fetchTo?: Date) => void;
+  onEventPress: (id: string) => void;
 }
 
 function EventList({
@@ -27,6 +28,7 @@ function EventList({
   data = [],
   timestamp,
   refresh,
+  onEventPress,
 }: EventListProps): React.JSX.Element {
   if (status === RequestStatus.error) {
     const message = error || 'Something went wrong';
@@ -44,6 +46,7 @@ function EventList({
         locationId={item.locationId as EventLocation}
         startTimestamp={item.startTimestamp}
         endTimestamp={item.endTimestamp}
+        onEventPress={onEventPress}
       />
     );
   }
