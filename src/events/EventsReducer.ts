@@ -36,6 +36,7 @@ function sortEvents(events: Event[] = []) {
 
 export function eventsReducer(events: Event[], action: EventsReducerAction) {
   let list = [];
+
   switch (action.type) {
     case 'loaded': {
       list = action.payload;
@@ -57,8 +58,6 @@ export function eventsReducer(events: Event[], action: EventsReducerAction) {
     default:
       list = events;
   }
-  console.log(
-    `ACTION ${action.type}, payload: ${JSON.stringify(action.payload)}`,
-  );
+
   return sortEvents(list);
 }

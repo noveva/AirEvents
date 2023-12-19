@@ -11,7 +11,7 @@ import useFetch from '../api/useFetch';
 import EventModal from './components/EventModal/EventModal';
 import EventList from './components/EventList/EventList';
 import {Event} from './EventsTypes';
-import {EventsContext, EventsDispatchContext} from './EventsContext';
+import {EventsDispatchContext} from './EventsContext';
 import {EventsReducerActionType, eventsReducer} from './EventsReducer';
 
 function Events(): React.JSX.Element {
@@ -24,15 +24,13 @@ function Events(): React.JSX.Element {
     dispatch({type: EventsReducerActionType.loaded, payload: data || []});
   }, [data]);
 
-  function toggleModal(refresh: boolean) {
+  function toggleModal() {
     setModalVisible(!isModalVisible);
-    if (refresh) {
-      fetchList();
-    }
   }
 
   function getUrl() {
     const toNow = getUnixNow();
+    // TODO get only from midnight of toNow day
     const from24hrsAgo = toNow - 24 * 60 * 60;
     return EVENTS_API.fetch(from24hrsAgo, toNow);
   }
@@ -43,27 +41,30 @@ function Events(): React.JSX.Element {
 
   return (
     <View style={styles.main}>
-      <EventsContext.Provider value={eventsList}>
-        <EventsDispatchContext.Provider value={dispatch}>
-          <EventList status={status} error={error} refresh={fetchList} />
-          <ButtonIcon
-            icon="add"
-            size={40}
-            style={styles.addButton}
-            onPress={() => toggleModal(false)}
-          />
-          <Modal
-            style={styles.modal}
-            isVisible={isModalVisible}
-            animationIn="slideInRight"
-            animationOut="slideOutRight"
-            animationInTiming={800}
-            animationOutTiming={800}
-            hasBackdrop={false}>
-            {isModalVisible && <EventModal onClose={toggleModal} />}
-          </Modal>
-        </EventsDispatchContext.Provider>
-      </EventsContext.Provider>
+      <EventsDispatchContext.Provider value={dispatch}>
+        <EventList
+          status={status}
+          error={error}
+          data={eventsList}
+          refresh={fetchList}
+        />
+        <ButtonIcon
+          icon="add"
+          size={40}
+          style={styles.addButton}
+          onPress={toggleModal}
+        />
+        <Modal
+          style={styles.modal}
+          isVisible={isModalVisible}
+          animationIn="slideInRight"
+          animationOut="slideOutRight"
+          animationInTiming={800}
+          animationOutTiming={800}
+          hasBackdrop={false}>
+          {isModalVisible && <EventModal onClose={toggleModal} />}
+        </Modal>
+      </EventsDispatchContext.Provider>
     </View>
   );
 }

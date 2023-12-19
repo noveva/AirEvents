@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {
   Alert,
   FlatList,
@@ -15,14 +15,17 @@ import {palette} from '../../../common/styles/colors';
 import {Event, EventLocation, EventType} from '../../EventsTypes';
 import EventListItem from './components/EventListItem';
 import EventListHeader from './components/EventListHeader';
-import {EventsContext} from '../../EventsContext';
 
 interface Props extends RequestState<Event[]> {
   refresh: () => void;
 }
 
-function EventList({status, error, refresh}: Props): React.JSX.Element {
-  const eventList = useContext(EventsContext);
+function EventList({
+  status,
+  error,
+  data = [],
+  refresh,
+}: Props): React.JSX.Element {
   if (status === RequestStatus.error) {
     const message = error || 'Something went wrong';
     Alert.alert('Could not load events', message, [
@@ -46,14 +49,14 @@ function EventList({status, error, refresh}: Props): React.JSX.Element {
   return (
     <>
       <EventListHeader />
-      {eventList.length === 0 && status !== RequestStatus.fetching && (
+      {data.length === 0 && status !== RequestStatus.fetching && (
         <View style={styles.messageContainer}>
           <Text style={styles.message}>No events</Text>
         </View>
       )}
-      {(eventList.length > 0 || status === RequestStatus.fetching) && (
+      {(data.length > 0 || status === RequestStatus.fetching) && (
         <FlatList
-          data={eventList}
+          data={data}
           renderItem={renderItem}
           keyExtractor={event => event.id as string}
           onRefresh={refresh}

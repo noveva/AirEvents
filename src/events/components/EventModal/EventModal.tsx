@@ -12,7 +12,7 @@ import {Event} from '../../EventsTypes';
 import {EventsDispatchContext} from '../../EventsContext';
 import {EventsReducerActionType} from '../../EventsReducer';
 
-type Props = {onClose: (refresh: boolean) => void};
+type Props = {onClose: () => void};
 
 function EventModal({onClose}: Props): React.JSX.Element {
   const {status, error, data, mutate} = useMutate<{id: string}>(
@@ -28,10 +28,10 @@ function EventModal({onClose}: Props): React.JSX.Element {
 
   useEffect(() => {
     if (status === RequestStatus.fetched && dispatch && eventData && data) {
-      onClose(true);
+      onClose();
       dispatch({
         type: EventsReducerActionType.added,
-        payload: {...eventData, ...data},
+        payload: {...eventData, ...data}, //assign event id to form data
       });
     }
   }, [status, onClose, dispatch, eventData, data]);
@@ -51,7 +51,7 @@ function EventModal({onClose}: Props): React.JSX.Element {
           icon="arrow-back"
           size={28}
           style={styles.backButton}
-          onPress={() => onClose(false)}
+          onPress={onClose}
         />
         <EventForm status={status} onSubmit={addEvent} />
       </View>
