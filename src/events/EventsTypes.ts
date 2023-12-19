@@ -10,3 +10,14 @@ export type Event = {
   startTimestamp: number;
   endTimestamp?: number;
 };
+
+export enum EventModals {
+  addEvent = 'addEvent',
+  stopTime = 'stopTime',
+}
+
+export type EventModalStateString = EventModals.addEvent | EventModals.stopTime;
+
+export type EventModalState = {
+  [key in EventModals]?: boolean;
+};

@@ -10,7 +10,12 @@ import {EVENTS_API} from '../api/Endpoints';
 import useFetch from '../api/useFetch';
 import EventModal from './components/EventModal/EventModal';
 import EventList from './components/EventList/EventList';
-import {Event} from './EventsTypes';
+import {
+  Event,
+  EventModalState,
+  EventModalStateString,
+  EventModals,
+} from './EventsTypes';
 import {EventsDispatchContext} from './EventsContext';
 import {EventsReducerActionType, eventsReducer} from './EventsReducer';
 
@@ -22,7 +27,7 @@ type FetchEventsParams = {
 function Events(): React.JSX.Element {
   const [{timestamp, fetchUrl}, setFetchUrl] = useState(getUrl());
   const {status, error, data} = useFetch<Event[]>(fetchUrl);
-  const [isModalVisible, setModalVisible] = useState(false);
+  const [modalIds, setModalState] = useState<EventModalState>({});
   const [eventsList, dispatch] = useReducer(eventsReducer, []);
   const isTimestampToday = timestamp ? isToday(timestamp) : false;
 
@@ -30,8 +35,13 @@ function Events(): React.JSX.Element {
     dispatch({type: EventsReducerActionType.loaded, payload: data || []});
   }, [data]);
 
-  function toggleModal() {
-    setModalVisible(!isModalVisible);
+  function toggleModal(id: EventModalStateString) {
+    const toggledModal = {[id]: !modalIds[id]};
+    setModalState({...modalIds, ...toggledModal});
+  }
+
+  function fetchList(fetchTo?: Date) {
+    setFetchUrl(getUrl(fetchTo));
   }
 
   function getUrl(fetchTo?: Date): FetchEventsParams {
@@ -44,10 +54,6 @@ function Events(): React.JSX.Element {
         getUnixTime(timestampTo),
       ),
     };
-  }
-
-  function fetchList(fetchTo?: Date) {
-    setFetchUrl(getUrl(fetchTo));
   }
 
   return (
@@ -65,18 +71,20 @@ function Events(): React.JSX.Element {
             icon="add"
             size={40}
             style={styles.addButton}
-            onPress={toggleModal}
+            onPress={() => toggleModal(EventModals.addEvent)}
           />
         )}
         <Modal
           style={styles.modal}
-          isVisible={isModalVisible}
+          isVisible={modalIds[EventModals.addEvent]}
           animationIn="slideInRight"
           animationOut="slideOutRight"
           animationInTiming={800}
           animationOutTiming={800}
           hasBackdrop={false}>
-          {isModalVisible && <EventModal onClose={toggleModal} />}
+          {modalIds[EventModals.addEvent] && (
+            <EventModal onClose={() => toggleModal(EventModals.addEvent)} />
+          )}
         </Modal>
       </EventsDispatchContext.Provider>
     </View>
