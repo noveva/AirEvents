@@ -11,6 +11,7 @@ import {HttpRequestMethods} from '../../../api/utils';
 import {Event} from '../../EventsTypes';
 import {EventsDispatchContext} from '../../EventsContext';
 import {EventsReducerActionType} from '../../EventsReducer';
+import {iconSize} from '../../../common/styles/iconSize';
 
 type Props = {onClose: () => void};
 
@@ -49,7 +50,7 @@ function EventModal({onClose}: Props): React.JSX.Element {
       <View style={styles.wrapper}>
         <ButtonIcon
           icon="arrow-back"
-          size={28}
+          size={iconSize.medium}
           style={styles.backButton}
           onPress={onClose}
         />

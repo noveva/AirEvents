@@ -18,6 +18,7 @@ import {
 } from './EventsTypes';
 import {EventsDispatchContext} from './EventsContext';
 import {EventsReducerActionType, eventsReducer} from './EventsReducer';
+import {iconSize} from '../common/styles/iconSize';
 
 type FetchEventsParams = {
   timestamp: Date;
@@ -70,7 +71,7 @@ function Events(): React.JSX.Element {
         {isTimestampToday && (
           <ButtonIcon
             icon="add"
-            size={40}
+            size={iconSize.large}
             style={styles.addButton}
             onPress={() => toggleModal(EventModals.addEvent)}
           />

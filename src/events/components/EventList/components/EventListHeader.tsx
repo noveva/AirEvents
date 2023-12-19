@@ -6,8 +6,7 @@ import containerUtils from '../../../../common/styles/containers';
 import textVariants from '../../../../common/styles/text';
 import spacingUtils from '../../../../common/styles/spacing';
 import {EventListProps} from '../EventList';
-
-const iconSize = 28;
+import {iconSize} from '../../../../common/styles/iconSize';
 
 export default function EventListHeader({
   timestamp = new Date(),
@@ -30,7 +29,7 @@ export default function EventListHeader({
     <View style={styles.row}>
       <ButtonIcon
         icon="arrow-back"
-        size={iconSize}
+        size={iconSize.medium}
         style={styles.cell}
         onPress={loadPreviousDay}
       />
@@ -40,7 +39,7 @@ export default function EventListHeader({
           <ButtonIcon
             style={styles.alignEnd}
             icon="arrow-forward"
-            size={iconSize}
+            size={iconSize.medium}
             onPress={loadNextDay}
           />
         )}

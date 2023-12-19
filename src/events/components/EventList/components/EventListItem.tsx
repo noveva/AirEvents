@@ -17,8 +17,7 @@ import {Event} from '../../../EventsTypes';
 import {EventsDispatchContext} from '../../../EventsContext';
 import {EventsReducerActionType} from '../../../EventsReducer';
 import {EventListProps} from '../EventList';
-
-const iconSize = 16;
+import {iconSize} from '../../../../common/styles/iconSize';
 
 function EventListItem({
   id,
@@ -67,11 +66,10 @@ function EventListItem({
     <Pressable onPress={handlePress}>
       <Card style={{...styles.row, ...styles.rowFixedHeight}}>
         <View style={[styles.cell, styles.row]}>
-          {/* View slightly smaller than the Icon to align with Text */}
           <View style={styles.icon}>
             <Icon
               name={locationId === 'bedroom' ? 'bed' : 'cafe'}
-              size={iconSize + 2}
+              size={iconSize.small}
               color={palette.white}
               allowFontScaling={false}
             />
@@ -87,7 +85,7 @@ function EventListItem({
           ) : (
             <ButtonIcon
               icon="stop"
-              size={iconSize}
+              size={iconSize.small}
               style={styles.stopButton}
               onPress={stop}
             />
@@ -123,13 +121,13 @@ const styles = StyleSheet.create({
   heading: {
     ...textVariants.headingSmall,
   },
-  icon: {
-    width: iconSize,
-    height: iconSize,
-  },
   stopButton: {
     backgroundColor: palette.blue63,
     borderRadius: 20,
     padding: 12,
+  },
+  icon: {
+    // vertically align icon with text in row
+    height: iconSize.small - 4,
   },
 });
