@@ -15,13 +15,12 @@ import {EventsDispatchContext} from './EventsContext';
 
 function Events(): React.JSX.Element {
   const [fetchUrl, setFetchUrl] = useState(getUrl());
-  const {status, error, data = []} = useFetch<Event[]>(fetchUrl);
+  const {status, error, data} = useFetch<Event[]>(fetchUrl);
   const [isModalVisible, setModalVisible] = useState(false);
-
-  const [eventsList, dispatch] = useReducer(eventsReducer, data);
+  const [eventsList, dispatch] = useReducer(eventsReducer, []);
 
   useEffect(() => {
-    dispatch({type: EventsReducerActionType.loaded, payload: data});
+    dispatch({type: EventsReducerActionType.loaded, payload: data || []});
   }, [data]);
 
   function toggleModal(refresh: boolean) {
