@@ -10,7 +10,7 @@ import {RequestStatus} from '../../../api/RequestReducer';
 import {HttpRequestMethods} from '../../../api/utils';
 import {Event} from '../../EventsTypes';
 import {EventsDispatchContext} from '../../EventsContext';
-import {EventsReducerActionType} from '../../Events';
+import {EventsReducerActionType} from '../../EventsReducer';
 
 type Props = {onClose: (refresh: boolean) => void};
 

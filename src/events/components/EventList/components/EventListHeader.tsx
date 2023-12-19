@@ -1,9 +1,9 @@
 import {View, Text, StyleSheet} from 'react-native';
 import React from 'react';
-import ButtonIcon from '../../../common/components/ButtonIcon';
-import containerUtils from '../../../common/styles/containers';
-import textVariants from '../../../common/styles/text';
-import spacingUtils from '../../../common/styles/spacing';
+import ButtonIcon from '../../../../common/components/ButtonIcon';
+import containerUtils from '../../../../common/styles/containers';
+import textVariants from '../../../../common/styles/text';
+import spacingUtils from '../../../../common/styles/spacing';
 
 const iconSize = 28;
 

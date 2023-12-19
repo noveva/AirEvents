@@ -1,21 +1,21 @@
 import React, {useContext, useEffect} from 'react';
 import {Text, StyleSheet, Alert, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import Card from '../../../common/components/Card';
-import textVariants from '../../../common/styles/text';
-import useMutate from '../../../api/useMutate';
-import {HttpRequestMethods} from '../../../api/utils';
-import {getUnixNow} from '../../../common/utils';
-import {RequestStatus} from '../../../api/RequestReducer';
-import {EVENTS_API} from '../../../api/Endpoints';
-import spacingUtils from '../../../common/styles/spacing';
-import {palette} from '../../../common/styles/colors';
-import ButtonIcon from '../../../common/components/ButtonIcon';
-import containerUtils from '../../../common/styles/containers';
-import {formatHHmm} from '../../../common/utils';
-import {Event} from '../../EventsTypes';
-import {EventsDispatchContext} from '../../EventsContext';
-import {EventsReducerActionType} from '../../Events';
+import Card from '../../../../common/components/Card';
+import textVariants from '../../../../common/styles/text';
+import useMutate from '../../../../api/useMutate';
+import {HttpRequestMethods} from '../../../../api/utils';
+import {getUnixNow} from '../../../../common/utils';
+import {RequestStatus} from '../../../../api/RequestReducer';
+import {EVENTS_API} from '../../../../api/Endpoints';
+import spacingUtils from '../../../../common/styles/spacing';
+import {palette} from '../../../../common/styles/colors';
+import ButtonIcon from '../../../../common/components/ButtonIcon';
+import containerUtils from '../../../../common/styles/containers';
+import {formatHHmm} from '../../../../common/utils';
+import {Event} from '../../../EventsTypes';
+import {EventsDispatchContext} from '../../../EventsContext';
+import {EventsReducerActionType} from '../../../EventsReducer';
 
 const iconSize = 16;
 

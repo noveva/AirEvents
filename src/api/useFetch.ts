@@ -9,11 +9,9 @@ import {getProtocol} from './utils';
 
 function useFetch<T>(url: string, body?: RequestInit): RequestState<T> {
   const cache = useRef<{[key: string]: any}>({});
-
   const initialState: RequestState<T> = {
     status: RequestStatus.idle,
   };
-
   const [fetchState, dispatch] =
     useRequestReducer<RequestState<T>>(initialState);
 
