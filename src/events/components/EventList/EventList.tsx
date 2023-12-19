@@ -17,8 +17,8 @@ import EventListItem from './components/EventListItem';
 import EventListHeader from './components/EventListHeader';
 
 export interface EventListProps extends RequestState<Event[]> {
-  timestamp: number;
-  refresh: () => void;
+  timestamp: Date;
+  refresh: (fetchTo?: Date) => void;
 }
 
 function EventList({
@@ -51,7 +51,7 @@ function EventList({
   return (
     <>
       <View style={styles.container}>
-        <EventListHeader timestamp={timestamp} />
+        <EventListHeader timestamp={timestamp} refresh={refresh} />
       </View>
       {data.length === 0 && status !== RequestStatus.fetching && (
         <View style={styles.messageContainer}>

@@ -1,7 +1,7 @@
 import React, {useEffect, useReducer, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import Modal from 'react-native-modal';
-import {getUnixTime, startOfDay} from 'date-fns';
+import {getUnixTime, startOfDay, isToday} from 'date-fns';
 import {palette} from '../common/styles/colors';
 import ButtonIcon from '../common/components/ButtonIcon';
 import containerUtils from '../common/styles/containers';
@@ -15,7 +15,7 @@ import {EventsDispatchContext} from './EventsContext';
 import {EventsReducerActionType, eventsReducer} from './EventsReducer';
 
 type FetchEventsParams = {
-  timestamp: number;
+  timestamp: Date;
   fetchUrl: string;
 };
 
@@ -24,6 +24,7 @@ function Events(): React.JSX.Element {
   const {status, error, data} = useFetch<Event[]>(fetchUrl);
   const [isModalVisible, setModalVisible] = useState(false);
   const [eventsList, dispatch] = useReducer(eventsReducer, []);
+  const isTimestampToday = timestamp ? isToday(timestamp) : false;
 
   useEffect(() => {
     dispatch({type: EventsReducerActionType.loaded, payload: data || []});
@@ -36,11 +37,8 @@ function Events(): React.JSX.Element {
   function getUrl(fetchTo?: Date): FetchEventsParams {
     const timestampTo = fetchTo ? new Date(fetchTo) : new Date();
     const midnight = startOfDay(timestampTo);
-    console.log(
-      `fetchTo ${getUnixTime(timestampTo)} from ${getUnixTime(midnight)}`,
-    );
     return {
-      timestamp: getUnixTime(timestampTo),
+      timestamp: timestampTo,
       fetchUrl: EVENTS_API.fetch(
         getUnixTime(midnight),
         getUnixTime(timestampTo),
@@ -62,12 +60,14 @@ function Events(): React.JSX.Element {
           timestamp={timestamp}
           refresh={fetchList}
         />
-        <ButtonIcon
-          icon="add"
-          size={40}
-          style={styles.addButton}
-          onPress={toggleModal}
-        />
+        {isTimestampToday && (
+          <ButtonIcon
+            icon="add"
+            size={40}
+            style={styles.addButton}
+            onPress={toggleModal}
+          />
+        )}
         <Modal
           style={styles.modal}
           isVisible={isModalVisible}
