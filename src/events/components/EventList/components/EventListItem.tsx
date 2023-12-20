@@ -1,7 +1,7 @@
 import React, {useContext, useEffect} from 'react';
 import {Text, StyleSheet, Alert, View, Pressable} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {getUnixTime} from 'date-fns';
+import {getUnixTime, fromUnixTime, isToday} from 'date-fns';
 import Card from '../../../../common/components/Card';
 import textVariants from '../../../../common/styles/text';
 import useMutate from '../../../../api/useMutate';
@@ -16,8 +16,8 @@ import {formatHHmm} from '../../../../common/utils';
 import {Event} from '../../../EventsTypes';
 import {EventsDispatchContext} from '../../../EventsContext';
 import {EventsReducerActionType} from '../../../EventsReducer';
-import {EventListProps} from '../EventList';
 import {iconSize} from '../../../../common/styles/iconSize';
+import {EventListProps} from '../EventList';
 
 function EventListItem({
   id,
@@ -30,13 +30,13 @@ function EventListItem({
   const dispatch = useContext(EventsDispatchContext);
   const startTime = formatEventTime(startTimestamp);
   const endTime = endTimestamp && formatEventTime(endTimestamp);
+  const canStopEvent = isToday(fromUnixTime(startTimestamp));
   const {status, error, data, mutate} = useMutate<Event>(
     HttpRequestMethods.patch,
   );
 
   function formatEventTime(unixTimestamp: number): string {
-    const timestampUTC = unixTimestamp * 1000;
-    return formatHHmm(timestampUTC);
+    return formatHHmm(fromUnixTime(unixTimestamp));
   }
 
   async function stop() {
@@ -82,13 +82,15 @@ function EventListItem({
         <View style={[styles.row, styles.lastCell]}>
           {endTime ? (
             <Text style={[styles.text]}>{endTime}</Text>
-          ) : (
+          ) : canStopEvent ? (
             <ButtonIcon
               icon="stop"
               size={iconSize.small}
               style={styles.stopButton}
               onPress={stop}
             />
+          ) : (
+            <Text style={[styles.text]}>-</Text>
           )}
         </View>
       </Card>
