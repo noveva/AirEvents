@@ -66,7 +66,15 @@ function EventListItem({
   }, [status, data, dispatch]);
 
   return (
-    <Pressable onPress={handlePress}>
+    <Pressable
+      onPress={handlePress}
+      style={({pressed}) =>
+        pressed && !endTime
+          ? {
+              opacity: 0.5,
+            }
+          : {}
+      }>
       <Card style={{...styles.row, ...styles.rowFixedHeight}}>
         <View style={[styles.cell, styles.row]}>
           <View style={styles.icon}>
