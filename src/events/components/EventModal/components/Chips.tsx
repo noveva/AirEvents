@@ -14,7 +14,6 @@ type Props<T> = {
   onPress: (value: ChipValue<T>) => void;
 };
 
-// TODO refactor to add keys, forgot
 function Chips<T>({
   options,
   selected,
