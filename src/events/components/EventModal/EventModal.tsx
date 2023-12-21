@@ -44,7 +44,9 @@ function EventModal({onClose}: Props): React.JSX.Element {
   const timestampOptions: ChipValues<number> = TIMESTAMPS.map(
     ({label, value}) => ({id: value.toString(), label, value}),
   );
-  const [startTime, setStartTime] = useState(timestampOptions[0].id);
+  const [startTime, setStartTime] = useState<ChipValue<number>>(
+    timestampOptions[0],
+  );
   const [event, setEvent] = useState<Partial<Event> | undefined>({
     locationId: locationOptions[0].value as EventLocation,
     startTimestamp: timestampOptions[0].value,
@@ -57,8 +59,8 @@ function EventModal({onClose}: Props): React.JSX.Element {
     !!event &&
     !!event.eventType &&
     !!event.locationId &&
-    !!event.startTimestamp &&
-    event.startTimestamp >= 0;
+    !!startTime &&
+    startTime.value >= 0;
 
   function mapOptions(values: readonly string[]) {
     return values.map(value => ({
@@ -76,14 +78,17 @@ function EventModal({onClose}: Props): React.JSX.Element {
     setEvent({...event, eventType: value} as Event);
   }
 
-  function updateStartTime({id, value}: ChipValue<number>) {
-    const startTimeStamp = getUnixTime(new Date()) - value;
-    setStartTime(id);
-    setEvent({...event, startTimestamp: startTimeStamp} as Event);
+  function updateStartTime(option: ChipValue<number>) {
+    setStartTime(option);
   }
 
   async function addEvent() {
-    await mutate(EVENTS_API.add, event as Event);
+    const withUpdatedStart = {
+      ...event,
+      startTimestamp: getUnixTime(new Date()) - startTime.value,
+    };
+    setEvent(withUpdatedStart);
+    await mutate(EVENTS_API.add, withUpdatedStart as Event);
   }
 
   useEffect(() => {
@@ -125,7 +130,7 @@ function EventModal({onClose}: Props): React.JSX.Element {
       <EventFormGroup
         groupId="selectStart"
         label="Started"
-        selected={startTime}
+        selected={startTime.id}
         options={timestampOptions}
         onPress={updateStartTime}
       />
