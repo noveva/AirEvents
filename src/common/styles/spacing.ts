@@ -11,8 +11,14 @@ const spacingUtils = {
   marginB4: {
     marginBottom: 4,
   },
+  marginB12: {
+    marginBottom: 12,
+  },
   marginR18: {
     marginRight: 18,
+  },
+  marginT16: {
+    marginTop: 16,
   },
   paddingH12: {
     paddingHorizontal: 12,

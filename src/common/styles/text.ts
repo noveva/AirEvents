@@ -10,6 +10,10 @@ const textVariants = StyleSheet.create({
     fontSize: 20,
     color: palette.white,
   },
+  headingSmall: {
+    fontSize: 18,
+    color: palette.white,
+  },
   caption: {
     fontSize: 14,
     color: palette.white,

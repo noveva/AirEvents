@@ -3,6 +3,7 @@ import {Pressable, StyleSheet, ViewStyle} from 'react-native';
 import {GestureResponderEvent} from 'react-native-modal';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {palette} from '../styles/colors';
+import {pressableMinSize} from '../styles/iconSize';
 
 type Props = {
   icon: string;
@@ -12,8 +13,7 @@ type Props = {
 };
 
 function ButtonIcon({icon, size, style, onPress}: Props): React.JSX.Element {
-  const tappableMinSize = 48; // Android minSize recommendation as it is larger than in iOS
-  const hitSlopValue = tappableMinSize > size ? tappableMinSize - size : 0;
+  const hitSlopValue = pressableMinSize > size ? pressableMinSize - size : 0;
 
   return (
     <Pressable onPress={onPress} style={style} hitSlop={hitSlopValue}>

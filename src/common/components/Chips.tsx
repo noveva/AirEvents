@@ -1,8 +1,8 @@
 import React from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
-import textVariants from '../../../../common/styles/text';
-import {palette} from '../../../../common/styles/colors';
-import spacingUtils from '../../../../common/styles/spacing';
+import textVariants from '../styles/text';
+import {palette} from '../styles/colors';
+import spacingUtils from '../styles/spacing';
 
 export type ChipValue<T> = {id: string; label: string; value: T};
 export type ChipValues<T> = ChipValue<T>[];
@@ -14,7 +14,6 @@ type Props<T> = {
   onPress: (value: ChipValue<T>) => void;
 };
 
-// TODO refactor to add keys, forgot
 function Chips<T>({
   options,
   selected,

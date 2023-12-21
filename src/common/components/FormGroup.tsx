@@ -1,9 +1,7 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
 import Chips, {ChipValue, ChipValues} from './Chips';
 import Label from './Label';
-import {palette} from '../../../../common/styles/colors';
-import spacingUtils from '../../../../common/styles/spacing';
+import Card from './Card';
 
 type Props<T> = {
   groupId: string;
@@ -21,7 +19,7 @@ function EventFormGroup<T>({
   onPress,
 }: Props<T>): React.JSX.Element {
   return (
-    <View style={styles.group}>
+    <Card>
       <Label text={label} nativeID={groupId} />
       <Chips
         options={options}
@@ -29,18 +27,8 @@ function EventFormGroup<T>({
         labelledBy={groupId}
         onPress={onPress}
       />
-    </View>
+    </Card>
   );
 }
 
 export default EventFormGroup;
-
-const styles = StyleSheet.create({
-  group: {
-    ...spacingUtils.paddingH16,
-    ...spacingUtils.paddingV8,
-    ...spacingUtils.marginV4,
-    borderRadius: 12,
-    backgroundColor: palette.blue100,
-  },
-});

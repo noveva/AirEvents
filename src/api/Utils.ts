@@ -3,11 +3,13 @@ export enum HttpRequestMethods {
   patch = 'PATCH',
 }
 
-type HttpRequestMethod = HttpRequestMethods.post | HttpRequestMethods.patch;
+export type HttpRequestMethodString =
+  | HttpRequestMethods.post
+  | HttpRequestMethods.patch;
 
 export function getRequestBody(
   data: {},
-  method: HttpRequestMethod,
+  method: HttpRequestMethodString,
 ): RequestInit {
   return {
     headers: {'Content-Type': 'application/json'},
@@ -18,9 +20,4 @@ export function getRequestBody(
 
 export function getProtocol(): string {
   return process.env.NODE_ENV === 'development' ? 'http://' : 'https://';
-}
-
-// number of seconds since epoch
-export function getUnixEpoch(secondsAgo: number): number {
-  return Math.floor(Date.now() / 1000) - secondsAgo;
 }

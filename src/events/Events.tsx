@@ -1,65 +1,101 @@
-import React, {useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import Modal from 'react-native-modal';
+import React, {useEffect, useReducer, useState} from 'react';
+import {StyleSheet, View} from 'react-native';
+import {getUnixTime, startOfDay, isToday} from 'date-fns';
 import {palette} from '../common/styles/colors';
-import textVariants from '../common/styles/text';
 import ButtonIcon from '../common/components/ButtonIcon';
-import EventModal from './components/EventModal/EventModal';
 import containerUtils from '../common/styles/containers';
 import spacingUtils from '../common/styles/spacing';
+import {EVENTS_API} from '../api/Endpoints';
+import useFetch from '../api/useFetch';
+import {iconSize} from '../common/styles/iconSize';
+import ModalWrapper from '../common/components/ModalWrapper';
+import AddEventModal from './components/AddEventForm';
+import EventList from './components/EventList/EventList';
+import {Event, EventModalStateString, EventModals} from './EventsTypes';
+import {EventsDispatchContext} from './EventsContext';
+import {EventsReducerActionType, eventsReducer} from './EventsReducer';
+import StopEventForm from './components/StopEventForm';
 
-const listItems = [
-  {title: 'Asdflkja'},
-  {title: 'Asdflkja flk'},
-  {title: 'Asd flkja sd flk'},
-  {title: 'flkj Asdflkja'},
-  {title: 'A sdflk ja'},
-];
+type FetchEventsParams = {
+  timestamp: Date;
+  fetchUrl: string;
+};
 
 function Events(): React.JSX.Element {
-  const [isModalVisible, setModalVisible] = useState(false);
+  const [{timestamp, fetchUrl}, setFetchUrl] = useState(getUrl());
+  const {status, error, data} = useFetch<Event[]>(fetchUrl);
+  const [isModalOpen, setModalState] = useState<EventModalStateString>();
+  const [eventsList, dispatch] = useReducer(eventsReducer, []);
+  const [eventId, setEventId] = useState<string>();
+  const isTimestampToday = timestamp ? isToday(timestamp) : false;
 
-  function toggleModal() {
-    setModalVisible(!isModalVisible);
+  useEffect(() => {
+    dispatch({type: EventsReducerActionType.loaded, payload: data || []});
+  }, [data]);
+
+  function toggleModal(modalId: EventModalStateString) {
+    setModalState(isModalOpen === modalId ? undefined : modalId);
+  }
+
+  function fetchList(fetchTo?: Date) {
+    setFetchUrl(getUrl(fetchTo));
+  }
+
+  function getUrl(fetchTo?: Date): FetchEventsParams {
+    const timestampTo = fetchTo ? new Date(fetchTo) : new Date();
+    const midnight = startOfDay(timestampTo);
+    return {
+      timestamp: timestampTo,
+      fetchUrl: EVENTS_API.fetch(
+        getUnixTime(midnight),
+        getUnixTime(timestampTo),
+      ),
+    };
+  }
+
+  function openCustomStopTimes(id: string) {
+    toggleModal(EventModals.stopTime);
+    setEventId(id);
   }
 
   return (
-    <View style={eventStyles.main}>
-      {listItems.map(item => (
-        <View
-          style={[
-            {
-              backgroundColor: palette.blue84,
-              marginTop: 10,
-              padding: 10,
-              borderRadius: 20,
-            },
-            eventStyles.main,
-          ]}>
-          <Text style={textVariants.body}>{item.title}</Text>
-        </View>
-      ))}
-      <Modal
-        style={eventStyles.modal}
-        isVisible={isModalVisible}
-        animationIn="slideInRight"
-        animationOut="slideOutRight"
-        animationInTiming={800}
-        animationOutTiming={800}
-        hasBackdrop={false}>
-        {isModalVisible && <EventModal onClose={toggleModal} />}
-      </Modal>
-      <ButtonIcon
-        icon="add"
-        size={40}
-        style={eventStyles.addButton}
-        onPress={toggleModal}
-      />
+    <View style={styles.main}>
+      <EventsDispatchContext.Provider value={dispatch}>
+        <EventList
+          status={status}
+          error={error}
+          data={eventsList}
+          timestamp={timestamp}
+          refresh={fetchList}
+          onEventPress={openCustomStopTimes}
+        />
+        {isTimestampToday && (
+          <ButtonIcon
+            icon="add"
+            size={iconSize.large}
+            style={styles.addButton}
+            onPress={() => toggleModal(EventModals.addEvent)}
+          />
+        )}
+        <ModalWrapper
+          isVisible={isModalOpen === EventModals.addEvent}
+          onClose={() => toggleModal(EventModals.addEvent)}>
+          <AddEventModal onClose={() => toggleModal(EventModals.addEvent)} />
+        </ModalWrapper>
+        <ModalWrapper
+          isVisible={isModalOpen === EventModals.stopTime}
+          onClose={() => toggleModal(EventModals.stopTime)}>
+          <StopEventForm
+            id={eventId as string}
+            onClose={() => toggleModal(EventModals.stopTime)}
+          />
+        </ModalWrapper>
+      </EventsDispatchContext.Provider>
     </View>
   );
 }
 
-const eventStyles = StyleSheet.create({
+const styles = StyleSheet.create({
   main: {
     flex: 1,
   },
@@ -75,8 +111,8 @@ const eventStyles = StyleSheet.create({
     borderRadius: 30,
     backgroundColor: palette.orange,
     position: 'absolute',
-    bottom: 0,
-    right: 0,
+    bottom: spacingUtils.marginR18.marginRight,
+    right: spacingUtils.marginR18.marginRight,
   },
 });
 
