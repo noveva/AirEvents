@@ -46,7 +46,10 @@ function EventListItem({
   }
 
   function handlePress() {
-    onEventPress(id as string);
+    // open stop event modal only if there is no end time
+    if (!endTimestamp) {
+      onEventPress(id as string);
+    }
   }
 
   if (status === RequestStatus.error) {
