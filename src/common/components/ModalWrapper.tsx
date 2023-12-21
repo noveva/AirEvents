@@ -1,15 +1,18 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import {SafeAreaView, StyleSheet, View} from 'react-native';
 import Modal from 'react-native-modal';
 import containerUtils from '../styles/containers';
 import spacingUtils from '../styles/spacing';
+import {iconSize} from '../styles/iconSize';
+import ButtonIcon from './ButtonIcon';
 
 type Props = {
   isVisible?: boolean;
+  onClose: () => void;
   children: React.JSX.Element | React.JSX.Element[];
 };
 
-function ModalWrapper({isVisible = false, children}: Props) {
+function ModalWrapper({isVisible = false, onClose, children}: Props) {
   return (
     <Modal
       style={styles.modal}
@@ -19,7 +22,17 @@ function ModalWrapper({isVisible = false, children}: Props) {
       animationInTiming={800}
       animationOutTiming={800}
       hasBackdrop={false}>
-      {children}
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.bar}>
+          <ButtonIcon
+            icon="arrow-back"
+            size={iconSize.medium}
+            style={styles.backButton}
+            onPress={onClose}
+          />
+          {children}
+        </View>
+      </SafeAreaView>
     </Modal>
   );
 }
@@ -30,5 +43,16 @@ const styles = StyleSheet.create({
   modal: {
     ...containerUtils.main,
     ...spacingUtils.margin0,
+  },
+  safeArea: {
+    flex: 1,
+  },
+  bar: {
+    flex: 1,
+    ...containerUtils.withPadding,
+  },
+  backButton: {
+    alignSelf: 'flex-start',
+    ...spacingUtils.paddingT6,
   },
 });

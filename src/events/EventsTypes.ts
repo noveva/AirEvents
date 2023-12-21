@@ -17,7 +17,3 @@ export enum EventModals {
 }
 
 export type EventModalStateString = EventModals.addEvent | EventModals.stopTime;
-
-export type EventModalState = {
-  [key in EventModals]?: boolean;
-};

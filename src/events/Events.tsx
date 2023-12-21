@@ -11,12 +11,7 @@ import {iconSize} from '../common/styles/iconSize';
 import ModalWrapper from '../common/components/ModalWrapper';
 import EventModal from './components/EventModal/EventModal';
 import EventList from './components/EventList/EventList';
-import {
-  Event,
-  EventModalState,
-  EventModalStateString,
-  EventModals,
-} from './EventsTypes';
+import {Event, EventModalStateString, EventModals} from './EventsTypes';
 import {EventsDispatchContext} from './EventsContext';
 import {EventsReducerActionType, eventsReducer} from './EventsReducer';
 
@@ -28,7 +23,7 @@ type FetchEventsParams = {
 function Events(): React.JSX.Element {
   const [{timestamp, fetchUrl}, setFetchUrl] = useState(getUrl());
   const {status, error, data} = useFetch<Event[]>(fetchUrl);
-  const [modalIds, setModalState] = useState<EventModalState>({});
+  const [isModalOpen, setModalState] = useState<EventModalStateString>();
   const [eventsList, dispatch] = useReducer(eventsReducer, []);
   const isTimestampToday = timestamp ? isToday(timestamp) : false;
 
@@ -36,9 +31,10 @@ function Events(): React.JSX.Element {
     dispatch({type: EventsReducerActionType.loaded, payload: data || []});
   }, [data]);
 
-  function toggleModal(id: EventModalStateString) {
-    const toggledModal = {[id]: !modalIds[id]};
-    setModalState({...modalIds, ...toggledModal});
+  function toggleAddEventModal() {
+    setModalState(
+      isModalOpen === EventModals.addEvent ? undefined : EventModals.addEvent,
+    );
   }
 
   function fetchList(fetchTo?: Date) {
@@ -57,6 +53,10 @@ function Events(): React.JSX.Element {
     };
   }
 
+  function openCustomStopTimes(id: string) {
+    console.log(id);
+  }
+
   return (
     <View style={styles.main}>
       <EventsDispatchContext.Provider value={dispatch}>
@@ -66,18 +66,20 @@ function Events(): React.JSX.Element {
           data={eventsList}
           timestamp={timestamp}
           refresh={fetchList}
-          onEventPress={id => console.log(id)}
+          onEventPress={openCustomStopTimes}
         />
         {isTimestampToday && (
           <ButtonIcon
             icon="add"
             size={iconSize.large}
             style={styles.addButton}
-            onPress={() => toggleModal(EventModals.addEvent)}
+            onPress={toggleAddEventModal}
           />
         )}
-        <ModalWrapper isVisible={modalIds[EventModals.addEvent]}>
-          <EventModal onClose={() => toggleModal(EventModals.addEvent)} />
+        <ModalWrapper
+          isVisible={isModalOpen === EventModals.addEvent}
+          onClose={toggleAddEventModal}>
+          <EventModal onClose={toggleAddEventModal} />
         </ModalWrapper>
       </EventsDispatchContext.Provider>
     </View>
