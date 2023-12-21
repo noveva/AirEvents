@@ -23,12 +23,14 @@ function EventModal({onClose}: Props): React.JSX.Element {
   const dispatch = useContext(EventsDispatchContext);
 
   async function addEvent(eventFormData: Event) {
-    await mutate(EVENTS_API.add, eventFormData);
     setEventData(eventFormData);
+    await mutate(EVENTS_API.add, eventFormData);
   }
 
   useEffect(() => {
     if (status === RequestStatus.fetched && dispatch && eventData && data) {
+      // make sure this effect runs only once
+      setEventData(undefined);
       onClose();
       dispatch({
         type: EventsReducerActionType.added,
