@@ -1,24 +1,24 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Alert, StyleSheet, View} from 'react-native';
 import {getUnixTime} from 'date-fns';
-import {EVENTS_API} from '../../../api/Endpoints';
-import useMutate from '../../../api/useMutate';
-import {RequestStatus} from '../../../api/RequestReducer';
-import {HttpRequestMethods} from '../../../api/utils';
-import spacingUtils from '../../../common/styles/spacing';
-import Button from '../../../common/components/Button';
+import {EVENTS_API} from '../../api/Endpoints';
+import useMutate from '../../api/useMutate';
+import {RequestStatus} from '../../api/RequestReducer';
+import {HttpRequestMethods} from '../../api/utils';
+import spacingUtils from '../../common/styles/spacing';
+import Button from '../../common/components/Button';
 import {
   EVENTS,
   Event,
   EventLocation,
   EventType,
   LOCATIONS,
-} from '../../EventsTypes';
-import {EventsDispatchContext} from '../../EventsContext';
-import {EventsReducerActionType} from '../../EventsReducer';
-import EventFormGroup from './components/FormGroup';
+} from '../EventsTypes';
+import {EventsDispatchContext} from '../EventsContext';
+import {EventsReducerActionType} from '../EventsReducer';
+import EventFormGroup from '../../common/components/FormGroup';
 
-import {ChipValue, ChipValues} from './components/Chips';
+import {ChipValue, ChipValues} from '../../common/components/Chips';
 
 type TimeStamp = {
   label: string;
@@ -38,7 +38,7 @@ const TIMESTAMPS: TimeStamp[] = [
 
 type Props = {onClose: () => void};
 
-function EventModal({onClose}: Props): React.JSX.Element {
+function AddEventModal({onClose}: Props): React.JSX.Element {
   const eventTypeOptions: ChipValues<string> = mapOptions(EVENTS);
   const locationOptions: ChipValues<string> = mapOptions(LOCATIONS);
   const timestampOptions: ChipValues<number> = TIMESTAMPS.map(
@@ -76,10 +76,6 @@ function EventModal({onClose}: Props): React.JSX.Element {
 
   function updateType({value}: ChipValue<EventType>) {
     setEvent({...event, eventType: value} as Event);
-  }
-
-  function updateStartTime(option: ChipValue<number>) {
-    setStartTime(option);
   }
 
   async function addEvent() {
@@ -132,7 +128,7 @@ function EventModal({onClose}: Props): React.JSX.Element {
         label="Started"
         selected={startTime.id}
         options={timestampOptions}
-        onPress={updateStartTime}
+        onPress={setStartTime}
       />
       <View style={styles.buttonRow}>
         <Button
@@ -146,7 +142,7 @@ function EventModal({onClose}: Props): React.JSX.Element {
   );
 }
 
-export default EventModal;
+export default AddEventModal;
 
 const styles = StyleSheet.create({
   container: {

@@ -1,7 +1,7 @@
 import React from 'react';
 import Chips, {ChipValue, ChipValues} from './Chips';
 import Label from './Label';
-import Card from '../../../../common/components/Card';
+import Card from './Card';
 
 type Props<T> = {
   groupId: string;
