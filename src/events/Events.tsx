@@ -1,6 +1,5 @@
 import React, {useEffect, useReducer, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import Modal from 'react-native-modal';
 import {getUnixTime, startOfDay, isToday} from 'date-fns';
 import {palette} from '../common/styles/colors';
 import ButtonIcon from '../common/components/ButtonIcon';
@@ -8,6 +7,8 @@ import containerUtils from '../common/styles/containers';
 import spacingUtils from '../common/styles/spacing';
 import {EVENTS_API} from '../api/Endpoints';
 import useFetch from '../api/useFetch';
+import {iconSize} from '../common/styles/iconSize';
+import ModalWrapper from '../common/components/ModalWrapper';
 import EventModal from './components/EventModal/EventModal';
 import EventList from './components/EventList/EventList';
 import {
@@ -18,7 +19,6 @@ import {
 } from './EventsTypes';
 import {EventsDispatchContext} from './EventsContext';
 import {EventsReducerActionType, eventsReducer} from './EventsReducer';
-import {iconSize} from '../common/styles/iconSize';
 
 type FetchEventsParams = {
   timestamp: Date;
@@ -76,18 +76,9 @@ function Events(): React.JSX.Element {
             onPress={() => toggleModal(EventModals.addEvent)}
           />
         )}
-        <Modal
-          style={styles.modal}
-          isVisible={modalIds[EventModals.addEvent]}
-          animationIn="slideInRight"
-          animationOut="slideOutRight"
-          animationInTiming={800}
-          animationOutTiming={800}
-          hasBackdrop={false}>
-          {modalIds[EventModals.addEvent] && (
-            <EventModal onClose={() => toggleModal(EventModals.addEvent)} />
-          )}
-        </Modal>
+        <ModalWrapper isVisible={modalIds[EventModals.addEvent]}>
+          <EventModal onClose={() => toggleModal(EventModals.addEvent)} />
+        </ModalWrapper>
       </EventsDispatchContext.Provider>
     </View>
   );
