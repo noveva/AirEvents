@@ -1,8 +1,16 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Airy app
 
-# Getting Started
+This repository contains app code for the airy project. Project consists of:
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+- [Arduino IoT with environmental sensors](https://github.com/oddnoodles/airy-iot). It collects air quality, temperature, humidity and other enviromental data and sends it to an MQTT broker. 
+- [Backend](https://github.com/oddnoddles/airy-backend). It records air quality measurements and provides a REST API to manage events.
+- App (this repository). It manages events that impact air quality, users can:
+  - start and stop events based on the location
+  - view all recorded events day by day
+
+Main aim of the app is record all events that we _think_ have impact on air quality and then cross reference that with the data gathered by Arduino IOT sensors.
+
+# How to run
 
 ## Step 1: Start the Metro Server
 
@@ -18,7 +26,7 @@ npm start
 yarn start
 ```
 
-## Step 2: Start your Application
+## Step 2: Run the app
 
 Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
 
@@ -46,34 +54,16 @@ If everything is set up _correctly_, you should see your new app running in your
 
 This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
 
-## Step 3: Modifying your App
+# What's next
 
-Now that you have successfully run the app, let's modify it.
+Good start, but the airy project is far from over.
 
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
+TODO for now looks as follows:
 
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
+0. Process user feedback, add tests and environment configs to prepare first release
+1. Push notifications for when air quality thresholds are crossed
+2. New screen with environmental data the project collects from Arduino IOT sensors
+2. Bottom navigation bar with an item for each screen
+3. Map out all events on top of air quality readings.
+   This _should_ give an idea of how these two data sets relate :crystal_ball:
 
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
