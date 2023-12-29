@@ -1,8 +1,8 @@
 import {Alert, StyleSheet, View} from 'react-native';
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {getUnixTime} from 'date-fns';
 import spacingUtils from '../../common/styles/spacing';
-import {EventsDispatchContext} from '../EventsContext';
+import {useEventsDispatch} from '../EventsContext';
 import {EventsReducerActionType} from '../EventsReducer';
 import Button from '../../common/components/Button';
 import {RequestStatus} from '../../api/RequestReducer';
@@ -28,7 +28,7 @@ function StopEventModal({id, onClose}: Props) {
   const {status, error, data, mutate} = useMutate<Event>(
     HttpRequestMethods.patch,
   );
-  const dispatch = useContext(EventsDispatchContext);
+  const dispatch = useEventsDispatch();
   const hasEndtimeSelected = endTime && endTime.value >= 0;
 
   async function updateEndTime() {

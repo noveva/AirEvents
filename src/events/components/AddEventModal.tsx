@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Alert, StyleSheet, View} from 'react-native';
 import {getUnixTime} from 'date-fns';
 import {EVENTS_API} from '../../api/Endpoints';
@@ -14,7 +14,7 @@ import {
   EventType,
   LOCATIONS,
 } from '../EventsTypes';
-import {EventsDispatchContext} from '../EventsContext';
+import {useEventsDispatch} from '../EventsContext';
 import {EventsReducerActionType} from '../EventsReducer';
 import EventFormGroup from '../../common/components/FormGroup';
 
@@ -54,7 +54,7 @@ function AddEventModal({onClose}: Props): React.JSX.Element {
   const {status, error, data, mutate} = useMutate<{id: string}>(
     HttpRequestMethods.post,
   );
-  const dispatch = useContext(EventsDispatchContext);
+  const dispatch = useEventsDispatch();
   const isValidEvent: boolean =
     !!event &&
     !!event.eventType &&

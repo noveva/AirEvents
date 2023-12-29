@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {Text, StyleSheet, Alert, View, Pressable} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {getUnixTime, fromUnixTime, isToday} from 'date-fns';
@@ -14,7 +14,7 @@ import ButtonIcon from '../../../../common/components/ButtonIcon';
 import containerUtils from '../../../../common/styles/containers';
 import {formatHHmm} from '../../../../common/utils';
 import {Event} from '../../../EventsTypes';
-import {EventsDispatchContext} from '../../../EventsContext';
+import {useEventsDispatch} from '../../../EventsContext';
 import {EventsReducerActionType} from '../../../EventsReducer';
 import {iconSize} from '../../../../common/styles/iconSize';
 import {EventListProps} from '../EventList';
@@ -27,7 +27,7 @@ function EventListItem({
   endTimestamp,
   onEventPress,
 }: Event & Pick<EventListProps, 'onEventPress'>): React.JSX.Element {
-  const dispatch = useContext(EventsDispatchContext);
+  const dispatch = useEventsDispatch();
   const startTime = formatEventTime(startTimestamp);
   const endTime = endTimestamp && formatEventTime(endTimestamp);
   const canStopEvent = isToday(fromUnixTime(startTimestamp));
