@@ -9,12 +9,12 @@ import {EVENTS_API} from '../api/Endpoints';
 import useFetch from '../api/useFetch';
 import {iconSize} from '../common/styles/iconSize';
 import ModalWrapper from '../common/components/ModalWrapper';
-import AddEventModal from './components/AddEventForm';
+import AddEventModal from './components/AddEventModal';
 import EventList from './components/EventList/EventList';
 import {Event, EventModalStateString, EventModals} from './EventsTypes';
 import {EventsDispatchContext} from './EventsContext';
 import {EventsReducerActionType, eventsReducer} from './EventsReducer';
-import StopEventForm from './components/StopEventForm';
+import StopEventModal from './components/StopEventModal';
 
 type FetchEventsParams = {
   timestamp: Date;
@@ -85,7 +85,7 @@ function Events(): React.JSX.Element {
         <ModalWrapper
           isVisible={isModalOpen === EventModals.stopTime}
           onClose={() => toggleModal(EventModals.stopTime)}>
-          <StopEventForm
+          <StopEventModal
             id={eventId as string}
             onClose={() => toggleModal(EventModals.stopTime)}
           />

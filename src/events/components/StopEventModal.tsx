@@ -18,7 +18,7 @@ type Props = {
   onClose: () => void;
 };
 
-function StopEventForm({id, onClose}: Props) {
+function StopEventModal({id, onClose}: Props) {
   const timestampOptions: ChipValues<number> = TIMESTAMPS.map(
     ({label, value}) => ({id: value.toString(), label, value}),
   );
@@ -79,7 +79,7 @@ function StopEventForm({id, onClose}: Props) {
   );
 }
 
-export default StopEventForm;
+export default StopEventModal;
 
 const styles = StyleSheet.create({
   container: {
