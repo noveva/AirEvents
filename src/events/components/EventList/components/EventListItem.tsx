@@ -80,7 +80,7 @@ function EventListItem({
           <View style={styles.icon}>
             <Icon
               name={locationId === 'bedroom' ? 'bed' : 'cafe'}
-              size={iconSize.small}
+              size={iconSize.medium}
               color={palette.white}
               allowFontScaling={false}
             />
@@ -141,6 +141,6 @@ const styles = StyleSheet.create({
   },
   icon: {
     // vertically align icon with text in row
-    height: iconSize.small - 4,
+    height: iconSize.medium - 4,
   },
 });
