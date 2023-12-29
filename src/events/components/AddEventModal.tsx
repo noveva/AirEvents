@@ -13,6 +13,7 @@ import {
   EventLocation,
   EventType,
   LOCATIONS,
+  LocationIcons,
 } from '../EventsTypes';
 import {useEventsDispatch} from '../EventsContext';
 import {EventsReducerActionType} from '../EventsReducer';
@@ -39,8 +40,8 @@ const TIMESTAMPS: TimeStamp[] = [
 type Props = {onClose: () => void};
 
 function AddEventModal({onClose}: Props): React.JSX.Element {
-  const eventTypeOptions: ChipValues<string> = mapOptions(EVENTS);
-  const locationOptions: ChipValues<string> = mapOptions(LOCATIONS);
+  const eventTypeOptions: ChipValues<string> = EVENTS.map(mapOption);
+  const locationOptions: ChipValues<string> = LOCATIONS.map(mapLocationOption);
   const timestampOptions: ChipValues<number> = TIMESTAMPS.map(
     ({label, value}) => ({id: value.toString(), label, value}),
   );
@@ -62,12 +63,20 @@ function AddEventModal({onClose}: Props): React.JSX.Element {
     !!startTime &&
     startTime.value >= 0;
 
-  function mapOptions(values: readonly string[]) {
-    return values.map(value => ({
+  function mapOption(value: string) {
+    return {
       label: value,
       id: value,
       value,
-    }));
+    };
+  }
+
+  function mapLocationOption(value: EventLocation) {
+    const option = mapOption(value);
+    return {
+      ...option,
+      icon: LocationIcons[value],
+    };
   }
 
   function updateLocation({value}: ChipValue<EventLocation>) {
