@@ -2,7 +2,7 @@ import {Alert, StyleSheet, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {getUnixTime} from 'date-fns';
 import spacingUtils from '../../common/styles/spacing';
-import {useEventsDispatch} from '../EventsContext';
+import {useEvents, useEventsDispatch} from '../EventsContext';
 import {EventsReducerActionType} from '../EventsReducer';
 import Button from '../../common/components/Button';
 import {RequestStatus} from '../../api/RequestReducer';
@@ -19,6 +19,9 @@ type Props = {
 };
 
 function StopEventModal({id, onClose}: Props) {
+  const eventsList = useEvents();
+  const event = eventsList.find(event => event.id === id);
+  const errorTitle = 'Cannot end event';
   const timestampOptions: ChipValues<number> = TIMESTAMPS.map(
     ({label, value}) => ({id: value.toString(), label, value}),
   );
@@ -31,11 +34,27 @@ function StopEventModal({id, onClose}: Props) {
   const dispatch = useEventsDispatch();
   const hasEndtimeSelected = endTime && endTime.value >= 0;
 
+  function getTimeFromNow(endTimeValue: number): number {
+    return getUnixTime(new Date()) - endTimeValue;
+  }
+
   async function updateEndTime() {
     const body = {
-      endTimestamp: getUnixTime(new Date()) - endTime.value,
+      endTimestamp: getTimeFromNow(endTime.value),
     };
     await mutate(EVENTS_API.stop(id), body);
+  }
+
+  function validateEndTime(endTimeSelected: ChipValue<number>) {
+    const unixEndTime = getTimeFromNow(endTimeSelected.value);
+    const isAfterStartTime = event
+      ? unixEndTime - event.startTimestamp > 0
+      : false;
+    if (isAfterStartTime) {
+      setEndTime(endTimeSelected);
+    } else {
+      Alert.alert(errorTitle, 'End time is before start time', [{text: 'OK'}]);
+    }
   }
 
   useEffect(() => {
@@ -52,7 +71,7 @@ function StopEventModal({id, onClose}: Props) {
 
   if (status === RequestStatus.error) {
     const message = error || 'Something went wrong';
-    Alert.alert('Could not create event', message, [
+    Alert.alert(errorTitle, message, [
       {text: 'OK', onPress: () => console.log(message)},
     ]);
     setEndTime(undefined);
@@ -65,7 +84,7 @@ function StopEventModal({id, onClose}: Props) {
         label="Ended"
         selected={endTime?.id}
         options={timestampOptions}
-        onPress={setEndTime}
+        onPress={validateEndTime}
       />
       <View style={styles.buttonRow}>
         <Button
