@@ -141,7 +141,8 @@ function AddEventModal({onClose}: Props): React.JSX.Element {
       />
       <View style={styles.buttonRow}>
         <Button
-          label="Submit"
+          label="Start"
+          icon="play-circle"
           disabled={!isValidEvent}
           waiting={status === RequestStatus.fetching}
           onPress={addEvent}

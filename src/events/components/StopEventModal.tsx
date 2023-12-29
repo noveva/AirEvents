@@ -88,7 +88,8 @@ function StopEventModal({id, onClose}: Props) {
       />
       <View style={styles.buttonRow}>
         <Button
-          label="Submit"
+          label="Stop"
+          icon="stop-circle"
           disabled={!hasEndtimeSelected}
           waiting={status === RequestStatus.fetching}
           onPress={updateEndTime}
