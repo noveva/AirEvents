@@ -13,7 +13,7 @@ import {palette} from '../../../../common/styles/colors';
 import ButtonIcon from '../../../../common/components/ButtonIcon';
 import containerUtils from '../../../../common/styles/containers';
 import {formatHHmm} from '../../../../common/utils';
-import {Event} from '../../../EventsTypes';
+import {Event, LocationIcons} from '../../../EventsTypes';
 import {useEventsDispatch} from '../../../EventsContext';
 import {EventsReducerActionType} from '../../../EventsReducer';
 import {iconSize} from '../../../../common/styles/iconSize';
@@ -79,7 +79,7 @@ function EventListItem({
         <View style={[styles.cell, styles.row]}>
           <View style={styles.icon}>
             <Icon
-              name={locationId === 'bedroom' ? 'bed' : 'cafe'}
+              name={LocationIcons[locationId]}
               size={iconSize.medium}
               color={palette.white}
               allowFontScaling={false}

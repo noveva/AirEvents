@@ -1,7 +1,19 @@
-export const EVENTS = ['boil', 'fry', 'oven', 'window', 'laundry'] as const;
-export const LOCATIONS = ['livingroom', 'bedroom'] as const;
+enum Locations {
+  livingroom = 'livingroom',
+  bedroom = 'bedroom',
+}
+
+export const EVENTS = ['boil', 'fry', 'oven', 'window', 'laundry'];
+export const LOCATIONS = [Locations.livingroom, Locations.bedroom];
+
+export const LocationIcons = {
+  [Locations.bedroom]: 'bed',
+  [Locations.livingroom]: 'cafe',
+};
+
 export type EventType = (typeof EVENTS)[number];
-export type EventLocation = (typeof LOCATIONS)[number];
+
+export type EventLocation = Locations.livingroom | Locations.bedroom;
 
 export type Event = {
   id?: string;
