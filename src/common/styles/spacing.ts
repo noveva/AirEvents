@@ -17,6 +17,9 @@ const spacingUtils = {
   marginR18: {
     marginRight: 18,
   },
+  marginL6: {
+    marginLeft: 6,
+  },
   marginT16: {
     marginTop: 16,
   },

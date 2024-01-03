@@ -1,10 +1,12 @@
 import React from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 import textVariants from '../styles/text';
 import {palette} from '../styles/colors';
 import spacingUtils from '../styles/spacing';
+import {iconSize} from '../styles/iconSize';
 
-export type ChipValue<T> = {id: string; label: string; value: T};
+export type ChipValue<T> = {id: string; label: string; value: T; icon?: string};
 export type ChipValues<T> = ChipValue<T>[];
 
 type Props<T> = {
@@ -35,11 +37,22 @@ function Chips<T>({
           }}>
           {({pressed}) => {
             return (
-              <Text
-                role="radio"
-                style={[textVariants.body, pressed && styles.textPressed]}>
-                {option.label}
-              </Text>
+              <>
+                <Text
+                  role="radio"
+                  style={[textVariants.body, pressed && styles.textPressed]}>
+                  {option.label}
+                </Text>
+                {option.icon && (
+                  <Icon
+                    style={styles.icon}
+                    name={option.icon}
+                    size={iconSize.small}
+                    color={pressed ? styles.textPressed.color : palette.white}
+                    allowFontScaling={false}
+                  />
+                )}
+              </>
             );
           }}
         </Pressable>
@@ -54,6 +67,7 @@ const styles = StyleSheet.create({
   flexRow: {flexDirection: 'row', flexWrap: 'wrap', ...spacingUtils.marginB4},
   chip: {
     alignSelf: 'flex-start',
+    flexDirection: 'row',
     ...spacingUtils.marginV6,
     ...spacingUtils.marginR18,
     ...spacingUtils.paddingH16,
@@ -66,5 +80,8 @@ const styles = StyleSheet.create({
   },
   textPressed: {
     color: palette.grey,
+  },
+  icon: {
+    ...spacingUtils.marginL6,
   },
 });

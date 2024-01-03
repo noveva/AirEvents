@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {Text, StyleSheet, Alert, View, Pressable} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {getUnixTime, fromUnixTime, isToday} from 'date-fns';
@@ -13,8 +13,8 @@ import {palette} from '../../../../common/styles/colors';
 import ButtonIcon from '../../../../common/components/ButtonIcon';
 import containerUtils from '../../../../common/styles/containers';
 import {formatHHmm} from '../../../../common/utils';
-import {Event} from '../../../EventsTypes';
-import {EventsDispatchContext} from '../../../EventsContext';
+import {Event, LocationIcons} from '../../../EventsTypes';
+import {useEventsDispatch} from '../../../EventsContext';
 import {EventsReducerActionType} from '../../../EventsReducer';
 import {iconSize} from '../../../../common/styles/iconSize';
 import {EventListProps} from '../EventList';
@@ -27,7 +27,7 @@ function EventListItem({
   endTimestamp,
   onEventPress,
 }: Event & Pick<EventListProps, 'onEventPress'>): React.JSX.Element {
-  const dispatch = useContext(EventsDispatchContext);
+  const dispatch = useEventsDispatch();
   const startTime = formatEventTime(startTimestamp);
   const endTime = endTimestamp && formatEventTime(endTimestamp);
   const canStopEvent = isToday(fromUnixTime(startTimestamp));
@@ -79,8 +79,8 @@ function EventListItem({
         <View style={[styles.cell, styles.row]}>
           <View style={styles.icon}>
             <Icon
-              name={locationId === 'bedroom' ? 'bed' : 'cafe'}
-              size={iconSize.small}
+              name={LocationIcons[locationId]}
+              size={iconSize.medium}
               color={palette.white}
               allowFontScaling={false}
             />
@@ -141,6 +141,6 @@ const styles = StyleSheet.create({
   },
   icon: {
     // vertically align icon with text in row
-    height: iconSize.small - 4,
+    height: iconSize.medium - 4,
   },
 });

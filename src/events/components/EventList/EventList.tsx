@@ -15,6 +15,7 @@ import {palette} from '../../../common/styles/colors';
 import {Event, EventLocation, EventType} from '../../EventsTypes';
 import EventListItem from './components/EventListItem';
 import EventListHeader from './components/EventListHeader';
+import {useEvents} from '../../EventsContext';
 
 export interface EventListProps extends RequestState<Event[]> {
   timestamp: Date;
@@ -25,11 +26,12 @@ export interface EventListProps extends RequestState<Event[]> {
 function EventList({
   status,
   error,
-  data = [],
   timestamp,
   refresh,
   onEventPress,
 }: EventListProps): React.JSX.Element {
+  const eventsList = useEvents();
+
   if (status === RequestStatus.error) {
     const message = error || 'Something went wrong';
     Alert.alert('Could not load events', message, [
@@ -56,15 +58,15 @@ function EventList({
       <View style={styles.container}>
         <EventListHeader timestamp={timestamp} refresh={refresh} />
       </View>
-      {data.length === 0 && status !== RequestStatus.fetching && (
+      {eventsList.length === 0 && status !== RequestStatus.fetching && (
         <View style={styles.messageContainer}>
           <Text style={styles.message}>No events</Text>
         </View>
       )}
-      {(data.length > 0 || status === RequestStatus.fetching) && (
+      {(eventsList.length > 0 || status === RequestStatus.fetching) && (
         <FlatList
           style={styles.container}
-          data={data}
+          data={eventsList}
           renderItem={renderItem}
           keyExtractor={event => event.id as string}
           onRefresh={refresh}
